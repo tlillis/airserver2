@@ -5,6 +5,8 @@
 #include <queue>
 #include <string>
 #include <stdint.h>
+#include <sstream>
+#include <fstream>
 
 #include "../include/messages.h"
 
@@ -31,7 +33,7 @@ class Interface_Thread {
         uint8_t unlock();
     
     public:
-        virtual void thread_start() {std::cout << "BAD" <<std::endl;return;}
+        virtual void thread_start() {return;}
         virtual void thread_end() {return;}
         
         uint8_t try_pop(Message &message);
@@ -40,37 +42,40 @@ class Interface_Thread {
 
 class UDP_Thread: public Interface_Thread {
     private:
-        uint32_t port;
-        uint32_t port_send;
-        uint32_t port_bind;
-        uint8_t broadcast;
-        std::string address;
-    public:
-        void set_options(std::string address, uint32_t port, uint16_t thread_number);
+        uint32_t _port;
+        uint32_t _port_send;
+        uint32_t _port_bind;
+        uint8_t _broadcast;
+        std::string _address;
+        uint16_t _thread_number;
         void *handler(void);
-        void thread_start();
         static void *enter_handler(void *context);
+    public:
+        UDP_Thread(std::string address, uint32_t port, uint16_t thread_number);
+        void thread_start();
 };
 
 class Serial_Thread: public Interface_Thread {
     private:
-        uint32_t baud;
-        std::string port;
-    public:
-        void set_options(std::string file, uint32_t baud, uint16_t thread_number);
+        uint32_t _baud;
+        std::string _port;
+        uint16_t _thread_number;
         void *handler(void);
-        void thread_start();
         static void *enter_handler(void *context);
+    public:
+        Serial_Thread(std::string port, uint32_t baud, uint16_t thread_number);
+        void thread_start();
 };
 
 class Log_Thread: public Interface_Thread {
     private:
-        std::string file;
-    public:
-        void set_options(std::string file, uint16_t thread_number);
+        std::string _file;
+        uint16_t _thread_number;
         void *handler(void);
-        void thread_start();
         static void *enter_handler(void *context);
+    public:
+        Log_Thread(std::string file, uint16_t thread_number);
+        void thread_start();
 };
 
 class Congregation_Thread {
