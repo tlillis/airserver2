@@ -119,6 +119,8 @@ int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads,
             {
                 UDP_Thread *udp = new UDP_Thread(configs[i].interface,
                                                     configs[i].port,
+                                                    configs[i].format,
+                                                    configs[i].debug,
                                                     i);
                 thread = udp;
                 break;
@@ -127,6 +129,8 @@ int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads,
             {
                 Serial_Thread *serial = new Serial_Thread(configs[i].interface,
                                                             configs[i].baud,
+                                                            configs[i].format,
+                                                            configs[i].debug,
                                                             i);
                 thread = serial;
                 break;
@@ -134,6 +138,8 @@ int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads,
             case LOGGING:
             {
                 Log_Thread *logging = new Log_Thread(configs[i].interface,
+                                                            configs[i].format,
+                                                            configs[i].debug,
                                                             i);
                 thread = logging;
                 break;

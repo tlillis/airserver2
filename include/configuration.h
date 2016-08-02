@@ -16,6 +16,7 @@
 
 #define MAVLINK 0
 #define JSON 1
+#define VECTORNAV 2
 
 #define IN 0
 #define OUT 1

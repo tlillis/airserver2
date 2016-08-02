@@ -16,9 +16,11 @@ uint8_t Interface_Thread::try_push(Message message) {
     return 0;
 }
 
-UDP_Thread::UDP_Thread(std::string address, uint32_t port, uint16_t thread_number){
+UDP_Thread::UDP_Thread(std::string address, uint32_t port, uint8_t format, uint8_t debug, uint16_t thread_number){
     _address = address;
     _port = port;
+    _format = format;
+    _debug = debug;
     _thread_number = thread_number;
 }
 
@@ -36,9 +38,11 @@ void *UDP_Thread::enter_handler(void *context) {
     return ((UDP_Thread *)context)->handler();
 }
 
-Serial_Thread::Serial_Thread(std::string port, uint32_t baud, uint16_t thread_number){
+Serial_Thread::Serial_Thread(std::string port, uint32_t baud, uint8_t format, uint8_t debug, uint16_t thread_number){
     _port = port;
     _baud = baud;
+    _format = format;
+    _debug = debug;
     _thread_number = thread_number;
 }
 
@@ -47,8 +51,23 @@ void Serial_Thread::thread_start() {
     return;
 }
 
+void Serial_Thread::interface_json() {
+    
+    return;
+}
+
+void Serial_Thread::interface_mavlink() {
+    return;
+}
+
 void *Serial_Thread::handler(void) {
     std::cout << "Hello, world! Ho man Serial!" << std::endl;
+    
+    //if(_format == JSON) interface_json();
+    //else if(_format == MAVLINK) interface_mavlink();
+    //else if(_format == VECOTORNAV) interface_mavlink();
+    //else std::cout << "UNKOWN SERIAL INTERFACE" << std::endl;
+    
     return 0;
 }
 
@@ -56,8 +75,10 @@ void *Serial_Thread::enter_handler(void *context) {
     return ((Serial_Thread *)context)->handler();
 }
 
-Log_Thread::Log_Thread(std::string file, uint16_t thread_number){
+Log_Thread::Log_Thread(std::string file, uint8_t format, uint8_t debug, uint16_t thread_number){
     _file = file;
+    _format = format;
+    _debug = debug;
     _thread_number = thread_number;
 }
 
