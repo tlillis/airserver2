@@ -23,7 +23,7 @@ void intHandler(int dummy) {
         exit(0);
     }
     if(pid == 0) {
-        cout << "End!" << endl;
+        cout << endl << "End!" << endl;
         exit(0);
     }
     exit(0);

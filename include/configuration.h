@@ -1,5 +1,5 @@
-#ifndef HANDLE_ARGS_H
-#define HANDLE_ARGS_H
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
 
 #include <queue>
 #include <string>
@@ -37,8 +37,8 @@ struct Thread_Config {
 };
 
 int8_t handle_config_file(std::string filename,std::vector <Thread_Config> &configs);
-int8_t split_thread_directions(std::vector <Interface_Thread> &input_threads,
-                            std::vector <Interface_Thread> &output_threads,
+int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads,
+                            std::vector <Interface_Thread*> &output_threads,
                             std::vector <Thread_Config> configs);
 
-#endif // HANDLE_ARGS_H
+#endif // CONFIGURATION_H

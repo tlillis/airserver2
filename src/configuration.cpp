@@ -106,30 +106,30 @@ int8_t handle_config_file(std::string filename,std::vector <Thread_Config> &conf
     return ++interface_number; // increment by 1 so non index count
 }
 
-int8_t split_thread_directions(std::vector <Interface_Thread> &input_threads, 
-                            std::vector <Interface_Thread> &output_threads,
+int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads, 
+                            std::vector <Interface_Thread*> &output_threads,
                             std::vector <Thread_Config> configs) {
     for(uint16_t i = 0; i < configs.size(); i++) {
         uint8_t type = configs[i].type;
         uint8_t direction = configs[i].direction;
-        Interface_Thread thread;
+        Interface_Thread *thread;
         
         switch(type) {
             case UDP: 
             {
-                UDP_Thread udp;
+                UDP_Thread *udp = new UDP_Thread;
                 thread = udp;
                 break;
             }
             case SERIAL:
             {
-                Serial_Thread serial;
+                Serial_Thread *serial = new Serial_Thread;
                 thread = serial;
                 break;
             }
             case LOGGING:
             {
-                Log_Thread logging;
+                Log_Thread *logging = new Log_Thread;
                 thread = logging;
                 break;
             }

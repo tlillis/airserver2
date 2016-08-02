@@ -29,11 +29,21 @@ int main(int argc, char* argv[]) {
          << endl << endl;
     
     // Split into input and output vectors
-    vector <Interface_Thread> input_threads;
-    vector <Interface_Thread> output_threads;
+    vector <Interface_Thread*> input_threads;
+    vector <Interface_Thread*> output_threads;
     split_thread_directions(input_threads,output_threads,configs);
     
-    // start threads
+    for(uint16_t i = 0; i < input_threads.size(); i++) {
+        cout << "Starting input thread " << i << endl;
+        input_threads[i]->thread_start();
+    }
+    
+    for(uint16_t i = 0; i < output_threads.size(); i++) {
+        cout << "Starting output thread " << i << endl; 
+        output_threads[i]->thread_start();
+    }
+    
+    while(1) {}
     
     
     return 0;
