@@ -18,7 +18,7 @@ use         1
 type        LOGGING
 format      JSON
 direction   OUT
-interface   test
+interface   data
 filter      0
 debug       0
 port        0
