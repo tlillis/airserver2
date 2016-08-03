@@ -1,4 +1,6 @@
 #include "../include/threads.h"
+#include "../include/configuration.h"
+#include "../include/serial_port.h"
 
 uint8_t Interface_Thread::try_lock() {
     return 0;
@@ -57,16 +59,61 @@ void Serial_Thread::interface_json() {
 }
 
 void Serial_Thread::interface_mavlink() {
+    std::cout << "MAVLINK SERIAL THREAD" << std::endl;
+    Message message;
+    mavlink_message_t message_mavlink;
+    char * port = (char*)_port.c_str();
+    int count_r = 0;
+    int baud = _baud;
+
+    Serial_Port serial_port(port, baud);
+
+    int len = 0;
+
+    int gotData = 0;
+
+    serial_port.start();
+        
+    //while(!gotData) {
+    //    serial_port.start();
+    //    gotData = serial_port.read_message_mavlink(message_mavlink,2);
+    //    if(!gotData) {
+    //        serial_port.stop();
+    //    }
+    //}
+        
+    std::cout << port << " GOT MAVLINK DATA" << std::endl;
+
+    while(1) {
+        if (serial_port.status == 1) {
+            len = serial_port.read_message_mavlink(message_mavlink,2);
+        }
+        else {
+            break;
+        }
+        if (len) {
+            applyTimestamp(message);
+            message.mavlink = message_mavlink;
+            if(true) std::cout << "Got " << count_r << " messages" << std::endl;
+            count_r++;
+            }
+        usleep(100);
+    }
+    return;
+}
+
+void Serial_Thread::interface_vectornav() {
+    
     return;
 }
 
 void *Serial_Thread::handler(void) {
     std::cout << "Hello, world! Ho man Serial!" << std::endl;
     
-    //if(_format == JSON) interface_json();
-    //else if(_format == MAVLINK) interface_mavlink();
-    //else if(_format == VECOTORNAV) interface_mavlink();
-    //else std::cout << "UNKOWN SERIAL INTERFACE" << std::endl;
+    if(_format == JSON) interface_json();
+    else if(_format == MAVLINK) interface_mavlink();
+    else if(_format == VECTORNAV) interface_vectornav();
+    else std::cout << "UNKOWN SERIAL TYPE " << _format << " FOR INTERFACE " << _port << std::endl;
     
     return 0;
 }
@@ -89,7 +136,7 @@ void Log_Thread::thread_start() {
 
 void *Log_Thread::handler(void) {
     std::cout << "Hello, world! Time for some logging in " << _file << std::endl;
-    //Check to make new file
+    // Check to make new file
     unsigned int file_tag = 0;
     std::ostringstream oss;
 
@@ -103,7 +150,7 @@ void *Log_Thread::handler(void) {
 
     std::string message;
 
-    //int count = 0;
+    // int count = 0;
 
     FILE* pFile;
     pFile = fopen(oss.str().c_str(), "wb");

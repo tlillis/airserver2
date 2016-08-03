@@ -27,7 +27,6 @@ struct Thread_Config {
     uint8_t type;
     uint8_t direction;
     std::string interface;
-    //Filter filter;
     uint8_t debug;
     uint32_t port;
     uint32_t port_send;

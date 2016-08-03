@@ -9,7 +9,6 @@
 #include <fstream>
 
 #include "../include/messages.h"
-//#include "../include/configuration.h"
 
 using namespace std;
 
@@ -58,6 +57,7 @@ class Serial_Thread: public Interface_Thread {
         static void *enter_handler(void *context);
         void interface_json();
         void interface_mavlink();
+        void interface_vectornav();
     public:
         Serial_Thread(std::string port, uint32_t baud, uint8_t format, uint8_t debug, uint16_t thread_number);
         void thread_start();
