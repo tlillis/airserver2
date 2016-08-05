@@ -96,11 +96,11 @@ for filename in files:
                 json_data = json.loads(line)
 
                 #Get date of flight
-                if json_data['type'] == "AER" and date == None:
+                if json_data['type'] == "AEROPROBE" and date == None:
                     date = json_data['date']
 
                 #Check to see if airspeed above 8
-                if json_data['type'] == "VFR":
+                if json_data['type'] == "VFR_HUD":
                     VFR = True
                     if airspeed_max < json_data['airspeed']:
                         airspeed_max = json_data['airspeed']
@@ -124,15 +124,15 @@ for filename in files:
                             break
 
                 #Check to see if message type gotten
-                if json_data['type'] == "VEC" and VEC == False:
+                if json_data['type'] == "VECTOR_NAV" and VEC == False:
                     VEC = True
-                if json_data['type'] == "AER" and AER == False:
+                if json_data['type'] == "AEROPROBE" and AER == False:
                     AER = True
-                if json_data['type'] == "PTH" and PTH == False:
+                if json_data['type'] == "NCAR_PTH" and PTH == False:
                     PTH = True
-                if json_data['type'] == "IMU" and IMU == False:
+                if json_data['type'] == "RAW_IMU" and IMU == False:
                     IMU = True
-                if json_data['type'] == "GPS" and GPS == False:
+                if json_data['type'] == "GPS_RAW_INT" and GPS == False:
                     GPS = True
 
                 #After 500 messages check for messages to see if break is needed
@@ -155,7 +155,7 @@ for filename in files:
 
             except: #unable to parse JSON
                 #print "Parse Error"
-                #print line
+                print line
                 pass
 
             line_num += 1
