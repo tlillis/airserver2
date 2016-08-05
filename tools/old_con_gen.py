@@ -27,12 +27,10 @@ cpp_file.write('#include "../include/conversions.h"\n')
 cpp_file.write('#include <string>\n')
 cpp_file.write('#include <sstream>\n\n')
 
-cpp_file.write('#include "../include/messages.h"\n\n')
-
-cpp_file.write('int mav_to_json(Message &message) {\n\n')
-cpp_file.write(indent+'int msgid = message.mavlink.msgid;\n')
-cpp_file.write(indent+'int sysid = message.mavlink.sysid;\n')
-cpp_file.write(indent+'message.json.clear();\n\n')
+cpp_file.write('int mav_to_json(mavlink_message_t &message, std::string &json_message) {\n\n')
+cpp_file.write(indent+'int msgid = message.msgid;\n')
+cpp_file.write(indent+'int sysid = message.sysid;\n')
+cpp_file.write(indent+'json_message.clear();\n\n')
 
 cpp_file.write(indent+'std::ostringstream stream;\n\n')
 
@@ -54,12 +52,10 @@ for file in xml_files:
 
 		cpp_file.write(indent+indent+'case MAVLINK_MSG_ID_'+msg_name+': \n')
 		cpp_file.write(indent+indent+indent+'// msgid = '+msg_id+'\n')
-		#cpp_file.write(indent+indent+indent+'// '+desc+'\n')
+		cpp_file.write(indent+indent+indent+'// '+desc+'\n')
 		cpp_file.write(indent+indent+indent+'mavlink_'+msg_name_l+'_t '+msg_name_l+';\n')
-		cpp_file.write(indent+indent+indent+'mavlink_msg_'+msg_name_l+'_decode(&message.mavlink, &('+msg_name_l+'));\n')
-                cpp_file.write(indent+indent+indent+'stream << "{\\"airserver_time\\":" << message.timestamp\n')
-                cpp_file.write(indent+indent+indent+indent+'<< "\\",\\"type\\":\\"'+msg_name+'"\n')
-                #cpp_file.write(indent+indent+indent+'stream << "{\\"type\\":\\"'+msg_name+'"\n')
+		cpp_file.write(indent+indent+indent+'mavlink_msg_'+msg_name_l+'_decode(&message, &('+msg_name_l+'));\n')
+		cpp_file.write(indent+indent+indent+'stream << "{\\"type\\":\\"'+msg_name+'"\n')
 		cpp_file.write(indent+indent+indent+indent+'<< "\\",\\"system_id\\":\\"" << sysid\n')
 
 		for field in msg:
@@ -76,7 +72,7 @@ for file in xml_files:
 				pass
 		cpp_file.write(indent+indent+indent+indent+'<< "\\"}";\n')
 		cpp_file.write('\n')
-		cpp_file.write(indent+indent+indent+'message.json = stream.str();\n')
+		cpp_file.write(indent+indent+indent+'json_message = stream.str();\n')
 		cpp_file.write(indent+indent+indent+'return 0;\n')
 		cpp_file.write('\n')
 
@@ -86,7 +82,7 @@ cpp_file.write(indent+indent+indent+'// msgid = None\n')
 cpp_file.write(indent+indent+indent+'//\n')
 cpp_file.write(indent+indent+indent+'stream << "{\\"type\\":\\"CONVERSION_ERROR\\"}";\n')
 cpp_file.write('\n')
-cpp_file.write(indent+indent+indent+'message.json = stream.str();\n')
+cpp_file.write(indent+indent+indent+'json_message = stream.str();\n')
 cpp_file.write(indent+indent+indent+'return 0;\n')
 cpp_file.write('\n')
 

@@ -1,21 +1,76 @@
 #include "../include/threads.h"
 #include "../include/configuration.h"
 #include "../include/serial_port.h"
+#include "../include/conversions.h"
 
-uint8_t Interface_Thread::try_lock() {
-    return 0;
+uint8_t Interface_Thread::try_lock_input() {
+    return pthread_mutex_trylock(&lock_input);
 }
 
-uint8_t Interface_Thread::unlock() {
-    return 0;
+uint8_t Interface_Thread::unlock_input() {
+    return pthread_mutex_unlock(&lock_input);
+}
+
+uint8_t Interface_Thread::try_lock_output() {
+    return pthread_mutex_trylock(&lock_output);
+}
+
+uint8_t Interface_Thread::unlock_output() {
+    return pthread_mutex_unlock(&lock_output);
+}
+
+uint8_t Interface_Thread::try_pop_ouput(Message &message) {
+    if(try_lock_output()){
+        if(!output_q.empty()) {
+            message = output_q.front();
+            output_q.pop();
+            unlock_output();
+            return 0;
+        }
+        unlock_output();
+        return 1;
+    }
+    return 2;
+}
+
+uint8_t Interface_Thread::try_push_ouput(Message message) {
+    if(try_lock_output()){
+        output_q.push(message);
+        unlock_output();
+        return 0;
+    }
+    return 2;
+}
+
+uint8_t Interface_Thread::try_pop_input(Message &message) {
+    if(try_lock_input()){
+        if(!input_q.empty()) {
+            message = input_q.front();
+            input_q.pop();
+            unlock_input();
+            return 0;
+        }
+        unlock_input();
+        return 1;
+    }
+    return 2;
+}
+
+uint8_t Interface_Thread::try_push_input(Message message) {
+    if(try_lock_input()){
+        input_q.push(message);
+        unlock_input();
+        return 0;
+    }
+    return 2;
 }
 
 uint8_t Interface_Thread::try_pop(Message &message) {
-    return 0;
+    return try_pop_input(message);
 }
 
 uint8_t Interface_Thread::try_push(Message message) {
-    return 0;
+    return try_push_ouput(message);
 }
 
 UDP_Thread::UDP_Thread(std::string address, uint32_t port, uint8_t format, uint8_t debug, uint16_t thread_number){
@@ -40,6 +95,36 @@ void *UDP_Thread::enter_handler(void *context) {
     return ((UDP_Thread *)context)->handler();
 }
 
+void UDP_Thread::interface_json() {
+    //struct sockaddr_in si_me, si_other;
+    //int s, i, slen=sizeof(si_other);
+    //char buf[BUFLEN];
+    
+    //if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
+        //diep("socket");
+    
+    //memset((char *) &si_me, 0, sizeof(si_me));
+    //si_me.sin_family = AF_INET;
+    //si_me.sin_port = htons(PORT);
+    //si_me.sin_addr.s_addr = htonl(INADDR_ANY);
+    //if (bind(s, &si_me, sizeof(si_me))==-1)
+        //diep("bind");
+    
+    //for (i=0; i<NPACK; i++) {
+        //if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1)            //diep("recvfrom()");
+            //printf("Received packet from %s:%d\nData: %s\n\n", 
+            //inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buf);
+    //}
+    
+    //close(s);
+    return;
+}
+
+void UDP_Thread::interface_mavlink() {
+    
+    return;
+}
+
 Serial_Thread::Serial_Thread(std::string port, uint32_t baud, uint8_t format, uint8_t debug, uint16_t thread_number){
     _port = port;
     _baud = baud;
@@ -60,7 +145,6 @@ void Serial_Thread::interface_json() {
 
 void Serial_Thread::interface_mavlink() {
     std::cout << "MAVLINK SERIAL THREAD" << std::endl;
-    Message message;
     mavlink_message_t message_mavlink;
     char * port = (char*)_port.c_str();
     int count_r = 0;
@@ -70,7 +154,7 @@ void Serial_Thread::interface_mavlink() {
 
     int len = 0;
 
-    int gotData = 0;
+    //int gotData = 0;
 
     serial_port.start();
         
@@ -92,9 +176,12 @@ void Serial_Thread::interface_mavlink() {
             break;
         }
         if (len) {
+            Message message;
             applyTimestamp(message);
             message.mavlink = message_mavlink;
-            if(true) std::cout << "Got " << count_r << " messages" << std::endl;
+            mav_to_json(message);
+            while(try_push_input(message)) {}
+            std::cout << "Got " << count_r << " messages" << std::endl;
             count_r++;
             }
         usleep(100);
@@ -157,11 +244,15 @@ void *Log_Thread::handler(void) {
 
     while (1) {
         if (pFile!=NULL) {
-            //if(fwrite(message.c_str(), 1, strlen(message.c_str()), pFile)) {
-                //fwrite("\n", sizeof(char), 1, pFile);
-                //fflush(pFile);
-                //count++;
+            Message message;
+            if(!try_pop_ouput(message)) {
+                if(fwrite(message.json.c_str(), 1, strlen(message.json.c_str()), pFile)) {
+                    fwrite("\n", sizeof(char), 1, pFile);
+                    fflush(pFile);
+                    //count++;
+                }
             }
+        }
         //usleep(5000);
     }
     fclose(pFile);

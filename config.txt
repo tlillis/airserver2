@@ -2,6 +2,12 @@
 # Example Config File #
 #######################
 
+# WARNING: Only able to handle
+#   4 mavlink serial interfaces
+#   at this time. This is a 
+#   restriction of the mavlink
+#   protocol.
+
 type        SERIAL
 format      MAVLINK
 direction   IN

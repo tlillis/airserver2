@@ -43,8 +43,46 @@ int main(int argc, char* argv[]) {
         output_threads[i]->thread_start();
     }
     
-    while(1) {}
+    std::queue <Message> input_q;
+    std::queue <Message> output_q;
     
+    while(1) {
+        
+        for(uint16_t i = 0; i < input_threads.size(); i++) {
+            Message message;
+
+            if(!input_threads[i]->try_pop(message)){
+                input_q.push(message);
+            }
+        }
+        if(input_q.size()) {
+            for(uint16_t i = 0; i < output_threads.size(); i++) {
+                Message message;
+                while(output_threads[i]->try_push(input_q.front()));
+            }
+            input_q.pop();
+        }
+        
+        
+        
+        for(uint16_t i = 0; i < output_threads.size(); i++) {
+            Message message;
+            
+            //if(!output_threads[i]->try_pop(message)){
+                //output_q.push(message);
+                //std::cout << "OUTPUT QUEUE SIZE " << output_q.size() << std::endl;
+                //std::cout << message.json << std::endl;
+            //}
+        }
+        
+        if(output_q.size()) {
+            for(uint16_t i = 0; i < input_threads.size(); i++) {
+                Message message;
+                while(input_threads[i]->try_push(output_q.front())) {}
+            }
+            output_q.pop();
+        }
+    }
     
     return 0;
 }
