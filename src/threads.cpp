@@ -146,7 +146,6 @@ void UDP_Thread::interface_mavlink() {
     int udpSocket, nBytes;
     uint8_t buffer[100000];
     struct sockaddr_in serverAddr;
-    struct sockaddr_storage serverStorage;
     socklen_t addr_size;
 
     /*Create UDP socket*/
@@ -162,12 +161,12 @@ void UDP_Thread::interface_mavlink() {
     bind(udpSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
 
     /*Initialize size variable to be used later on*/
-    addr_size = sizeof serverStorage;
+    addr_size = sizeof serverAddr;
 
     while(1){
         /* Try to receive any incoming UDP datagram. Address and port of 
         requesting client will be stored on serverStorage variable */
-        nBytes = recvfrom(udpSocket,buffer,100000,0,(struct sockaddr *)&serverStorage, &addr_size);
+        nBytes = recvfrom(udpSocket,buffer,100000,MSG_DONTWAIT,(struct sockaddr *)&serverAddr, &addr_size);
         for(int i = 0; i <= nBytes; i++) {
             Message message;
             mavlink_message_t mavlink_message;
@@ -177,7 +176,7 @@ void UDP_Thread::interface_mavlink() {
                 message.mavlink = mavlink_message;
                 mav_to_json(message);
                 while(try_push_input(message)) {}
-                std::cout << "GOT MESSAGE: " << mavlink_message.msgid << std::endl;
+                //std::cout << "GOT MESSAGE: " << message.json << std::endl;
             }
         }
         
@@ -185,7 +184,7 @@ void UDP_Thread::interface_mavlink() {
         if(!try_pop_ouput(message)) {
             mavlink_msg_to_send_buffer(buffer, &message.mavlink);
             /*Send uppercase message back to client, using serverStorage as the address*/
-            sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
+            sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverAddr,addr_size);
         }
     }
     return;
