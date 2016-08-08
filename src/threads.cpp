@@ -274,24 +274,187 @@ void Serial_Thread::interface_mavlink() {
 
 void Serial_Thread::interface_vectornav() {
     std::cout << "VECTORNAV SERIAL THREAD" << std::endl;
+    
+    unsigned int file_tag = 0;
+    std::ostringstream oss;
+
+    oss << "vectornav" << file_tag << ".txt";
+    while (std::ifstream(oss.str().c_str())) { //Check if file already exists
+        file_tag++;
+        oss.str("");
+        oss.clear();
+        oss << "vectornav" << file_tag << ".txt";
+    }
+    
+    FILE* pFile;
+    pFile = fopen(oss.str().c_str(), "wb");
+    
     char * port = (char*)_port.c_str();
     int count_r = 0;
     int baud = _baud;
+    
+    const uint8_t MESSAGE_SIZE = 218;                                                                                                 
+    //const uint8_t HEADER_SIZE = 4;
+    
+                                                    //0xFA 0x01 0xFF 0xFF    
+    //const uint32_t EXPECTED_HEADER = 4194435071;    //11111010 00000001 11111111 11111111
+                                                    //0xFA 0x00 0xFF 0xFF    
+    //const uint32_t EXPECTED_HEADER = 4194369535;    //11111010 00000000 11111111 11111111
+    
+    char buffer[MESSAGE_SIZE];
+    //char header[HEADER_SIZE];
 
     Serial_Port serial_port(port, baud);
     char buf;
+    //uint8_t sync = 0xFA; 
+    //uint8_t group = 0x00;
+    //uint16_t field = 0x00;
+    //uint16_t field2 = 0x00;
+    //uint16_t crc = 0;
+    
+    uint64_t time_startup = 0;
+    uint64_t time_gps = 0;
+    uint64_t time_syncln = 0;
+    float yaw = 0;
+    float pitch = 0;
+    float roll = 0;
+    float qtn[4];
+    float rate[3];
+    double latitude = 0;
+    double longitude = 0;
+    double altitude = 0;
+    float vel[3];
+    float accel[3];
+    float imu_rate[3];
+    float imu_accel[3];
+    float mag[3];
+    float temp;
+    float pres;
+    float dtime;
+    float dtheta[3];
+    float dvel[3];
+    uint16_t ins_status;
+    uint32_t sync_ln_cnt;
+    uint64_t time_gps_pps;
+    
+    int system_type = 10;                                                                                                             
+    int autopilot_type = 10;
 
+    
+    uint8_t mav_buf[MAVLINK_MAX_PACKET_LEN]; 
+    mavlink_message_t msg_vector;
 
     serial_port.start();
 
     while(1) {
         if (serial_port.status == 1) {
             serial_port.read_message_raw(buf);
+            if (pFile!=NULL) {
+                //if(fwrite(buf, 1, 1, pFile)) {
+                //    fwrite("\n", sizeof(char), 1, pFile);
+                //    fflush(pFile);
+                //}
+            }
+        time_startup = *(uint64_t*)buffer;
+        time_gps = *(uint64_t*)(buffer + 8);
+        time_syncln = *(uint64_t*)(buffer + 16);
+        yaw = *(float*)(buffer+24);
+        pitch = *(float*)(buffer+28);
+        roll = *(float*)(buffer+32);
+        qtn[0] = *(float*)(buffer+36);
+        qtn[1] = *(float*)(buffer+40);
+        qtn[2] = *(float*)(buffer+44);
+        qtn[3] = *(float*)(buffer+48);
+        rate[0] = *(float*)(buffer+52);
+        rate[1] = *(float*)(buffer+56);
+        rate[2] = *(float*)(buffer+60);
+        latitude = *(double*)(buffer+64);
+        longitude = *(double*)(buffer+72);
+        altitude = *(double*)(buffer+80);
+        vel[0] = *(float*)(buffer+88);
+        vel[1] = *(float*)(buffer+92);
+        vel[2] = *(float*)(buffer+96);
+        accel[0] = *(float*)(buffer+100);
+        accel[1] = *(float*)(buffer+104);
+        accel[2] = *(float*)(buffer+108);
+        imu_rate[0] = *(float*)(buffer+112);
+        imu_rate[1] = *(float*)(buffer+116);
+        imu_rate[2] = *(float*)(buffer+120);                                                                                                
+        imu_accel[3] = *(float*)(buffer+124);
+        imu_accel[4] = *(float*)(buffer+128);
+        imu_accel[5] = *(float*)(buffer+132);
+        mag[0] = *(float*)(buffer+136);
+        mag[1] = *(float*)(buffer+140);
+        mag[2] = *(float*)(buffer+144);
+        temp = *(float*)(buffer+148);
+        pres = *(float*)(buffer+152);
+        dtime = *(float*)(buffer+156);
+        dtheta[0] = *(float*)(buffer+160);
+        dtheta[1] = *(float*)(buffer+164);
+        dtheta[2] = *(float*)(buffer+168);
+        dvel[0] = *(float*)(buffer+172);
+        dvel[1] = *(float*)(buffer+176);
+        dvel[2] = *(float*)(buffer+180);
+        ins_status = *(uint16_t*)(buffer+184);
+        sync_ln_cnt = *(uint32_t*)(buffer+186);
+        time_gps_pps = *(uint64_t*)(buffer+190);
+        
+        mavlink_msg_vector_nav_pack(system_type, 
+                                autopilot_type, 
+                                &msg_vector, 
+                                time_startup, 
+                                time_startup, 
+                                time_gps,                                                                                        
+                                time_syncln, 
+                                yaw, 
+                                pitch, 
+                                roll,
+                                qtn[0],
+                                qtn[1],
+                                qtn[2],
+                                qtn[3],
+                                rate[0],
+                                rate[1],
+                                rate[2],
+                                latitude,
+                                longitude,
+                                altitude,
+                                vel[0],
+                                vel[1],
+                                vel[2],
+                                accel[0],
+                                accel[1],
+                                accel[2],
+                                imu_rate[0],
+                                imu_rate[1],
+                                imu_rate[2],
+                                imu_accel[0],
+                                imu_accel[1],
+                                imu_accel[2],
+                                mag[0],
+                                mag[1],
+                                mag[2],
+                                temp,
+                                pres,
+                                dtime,
+                                dtheta[0],
+                                dtheta[1],
+                                dtheta[2],
+                                dvel[0],                                                                               
+                                dvel[1],
+                                dvel[2],
+                                ins_status,
+                                sync_ln_cnt,
+                                time_gps_pps);
+
+        mavlink_msg_to_send_buffer(mav_buf, &msg_vector);
+
         }
         else {
             break;
         }
-        if (buf == '\n') {
+        
+        if (buf == 0xFA) {
             Message message;
             applyTimestamp(message);
             //json_to_mav(message);
