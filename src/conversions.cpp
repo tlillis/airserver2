@@ -1,6 +1,6 @@
 // This file was created using AirServer tool "con_gen.py"
 // Generated cpp code for converting mavlink to json
-// This code was generated on 05/08/2016 at 11:07:57
+// This code was generated on 05/08/2016 at 03:17:35
 
 #include "../include/conversions.h"
 #include <string>
@@ -47,7 +47,7 @@ int mav_to_json(Message &message) {
                 << "\",\"load\":\"" << sys_status.load
                 << "\",\"voltage_battery\":\"" << sys_status.voltage_battery
                 << "\",\"current_battery\":\"" << sys_status.current_battery
-                << "\",\"battery_remaining\":\"" << sys_status.battery_remaining
+                << "\",\"battery_remaining\":\"" << static_cast<int16_t>(sys_status.battery_remaining)
                 << "\",\"drop_rate_comm\":\"" << sys_status.drop_rate_comm
                 << "\",\"errors_comm\":\"" << sys_status.errors_comm
                 << "\",\"errors_count1\":\"" << sys_status.errors_count1
@@ -2087,7 +2087,7 @@ int mav_to_json(Message &message) {
                 << "\",\"current_battery\":\"" << battery_status.current_battery
                 << "\",\"current_consumed\":\"" << battery_status.current_consumed
                 << "\",\"energy_consumed\":\"" << battery_status.energy_consumed
-                << "\",\"battery_remaining\":\"" << battery_status.battery_remaining
+                << "\",\"battery_remaining\":\"" << static_cast<int16_t>(battery_status.battery_remaining)
                 << "\"}";
 
             message.json = stream.str();
@@ -2332,7 +2332,7 @@ int mav_to_json(Message &message) {
                 << "\",\"target_component\":\"" << unsigned(digicam_control.target_component)
                 << "\",\"session\":\"" << unsigned(digicam_control.session)
                 << "\",\"zoom_pos\":\"" << unsigned(digicam_control.zoom_pos)
-                << "\",\"zoom_step\":\"" << digicam_control.zoom_step
+                << "\",\"zoom_step\":\"" << static_cast<int16_t>(digicam_control.zoom_step)
                 << "\",\"focus_lock\":\"" << unsigned(digicam_control.focus_lock)
                 << "\",\"shot\":\"" << unsigned(digicam_control.shot)
                 << "\",\"command_id\":\"" << unsigned(digicam_control.command_id)

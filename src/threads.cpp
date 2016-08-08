@@ -88,6 +88,10 @@ void UDP_Thread::thread_start() {
 
 void *UDP_Thread::handler(void) {
     std::cout << "Hello, world! OMG UDP" << std::endl;
+    
+    if(_format == JSON) interface_json();
+    else if(_format == MAVLINK) interface_mavlink();
+    else std::cout << "UNKOWN UDP TYPE " << _format << " FOR INTERFACE " << _port << std::endl;
     return 0;
 }
 
@@ -96,32 +100,94 @@ void *UDP_Thread::enter_handler(void *context) {
 }
 
 void UDP_Thread::interface_json() {
-    //struct sockaddr_in si_me, si_other;
-    //int s, i, slen=sizeof(si_other);
-    //char buf[BUFLEN];
-    
-    //if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
-        //diep("socket");
-    
-    //memset((char *) &si_me, 0, sizeof(si_me));
-    //si_me.sin_family = AF_INET;
-    //si_me.sin_port = htons(PORT);
-    //si_me.sin_addr.s_addr = htonl(INADDR_ANY);
-    //if (bind(s, &si_me, sizeof(si_me))==-1)
-        //diep("bind");
-    
-    //for (i=0; i<NPACK; i++) {
-        //if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1)            //diep("recvfrom()");
-            //printf("Received packet from %s:%d\nData: %s\n\n", 
-            //inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buf);
-    //}
-    
-    //close(s);
+    int udpSocket, nBytes;
+    uint8_t buffer[100000];
+    struct sockaddr_in serverAddr;
+    socklen_t addr_size;
+
+    /*Create UDP socket*/
+    udpSocket = socket(PF_INET, SOCK_DGRAM, 0);
+
+    /*Configure settings in address struct*/
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(_port);
+    serverAddr.sin_addr.s_addr = inet_addr(_address.c_str());
+    memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
+
+    /*Bind socket with address struct*/
+    bind(udpSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
+
+    /*Initialize size variable to be used later on*/
+    addr_size = sizeof serverAddr;
+
+    while(1){
+        /* Try to receive any incoming UDP datagram. Address and port of 
+        requesting client will be stored on serverStorage variable */
+        nBytes = recvfrom(udpSocket,buffer,100000,MSG_DONTWAIT,(struct sockaddr *)&serverAddr, &addr_size);
+        if(nBytes > 0) {
+            Message message;
+            applyTimestamp(message);
+            //json_to_mav(message);
+            while(try_push_input(message)) {}
+            //std::cout << "GOT MESSAGE: " << message.json << std::endl;
+        }
+        
+        Message message;
+        if(!try_pop_ouput(message)) {
+            /*Send uppercase message back to client, using serverStorage as the address*/
+            sendto(udpSocket,message.json.c_str(),strlen(message.json.c_str()),0,(struct sockaddr *)&serverAddr,addr_size);
+            //std::cout << "SENT: " << message.json << std::endl;
+        }
+    }
     return;
 }
 
 void UDP_Thread::interface_mavlink() {
-    
+    int udpSocket, nBytes;
+    uint8_t buffer[100000];
+    struct sockaddr_in serverAddr;
+    struct sockaddr_storage serverStorage;
+    socklen_t addr_size;
+
+    /*Create UDP socket*/
+    udpSocket = socket(PF_INET, SOCK_DGRAM, 0);
+
+    /*Configure settings in address struct*/
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(_port);
+    serverAddr.sin_addr.s_addr = inet_addr(_address.c_str());
+    memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
+
+    /*Bind socket with address struct*/
+    bind(udpSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
+
+    /*Initialize size variable to be used later on*/
+    addr_size = sizeof serverStorage;
+
+    while(1){
+        /* Try to receive any incoming UDP datagram. Address and port of 
+        requesting client will be stored on serverStorage variable */
+        nBytes = recvfrom(udpSocket,buffer,100000,0,(struct sockaddr *)&serverStorage, &addr_size);
+        for(int i = 0; i <= nBytes; i++) {
+            Message message;
+            mavlink_message_t mavlink_message;
+            mavlink_status_t status;
+            if(mavlink_parse_char(4, buffer[i], &mavlink_message, &status) > 0) {
+                applyTimestamp(message);
+                message.mavlink = mavlink_message;
+                mav_to_json(message);
+                while(try_push_input(message)) {}
+                std::cout << "GOT MESSAGE: " << mavlink_message.msgid << std::endl;
+            }
+        }
+        
+        Message message;
+        if(!try_pop_ouput(message)) {
+            mavlink_msg_to_send_buffer(buffer, &message.mavlink);
+            /*Send uppercase message back to client, using serverStorage as the address*/
+            sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
+        }
+    }
     return;
 }
 
@@ -139,7 +205,37 @@ void Serial_Thread::thread_start() {
 }
 
 void Serial_Thread::interface_json() {
-    
+    std::cout << "JSON SERIAL THREAD" << std::endl;
+    char * port = (char*)_port.c_str();
+    int count_r = 0;
+    int baud = _baud;
+
+    Serial_Port serial_port(port, baud);
+
+    //int len = 0;
+    char buf;
+
+
+    serial_port.start();
+
+    while(1) {
+        if (serial_port.status == 1) {
+            serial_port.read_message_raw(buf);
+        }
+        else {
+            break;
+        }
+        if (buf == '\n') {
+            Message message;
+            applyTimestamp(message);
+            //message.json;
+            //json_to_mav(message);
+            while(try_push_input(message)) {}
+            std::cout << "Got " << count_r << " messages" << std::endl;
+            count_r++;
+            }
+        usleep(100);
+    }
     return;
 }
 
@@ -154,19 +250,7 @@ void Serial_Thread::interface_mavlink() {
 
     int len = 0;
 
-    //int gotData = 0;
-
     serial_port.start();
-        
-    //while(!gotData) {
-    //    serial_port.start();
-    //    gotData = serial_port.read_message_mavlink(message_mavlink,2);
-    //    if(!gotData) {
-    //        serial_port.stop();
-    //    }
-    //}
-        
-    std::cout << port << " GOT MAVLINK DATA" << std::endl;
 
     while(1) {
         if (serial_port.status == 1) {
@@ -190,7 +274,34 @@ void Serial_Thread::interface_mavlink() {
 }
 
 void Serial_Thread::interface_vectornav() {
-    
+    std::cout << "VECTORNAV SERIAL THREAD" << std::endl;
+    char * port = (char*)_port.c_str();
+    int count_r = 0;
+    int baud = _baud;
+
+    Serial_Port serial_port(port, baud);
+    char buf;
+
+
+    serial_port.start();
+
+    while(1) {
+        if (serial_port.status == 1) {
+            serial_port.read_message_raw(buf);
+        }
+        else {
+            break;
+        }
+        if (buf == '\n') {
+            Message message;
+            applyTimestamp(message);
+            //json_to_mav(message);
+            while(try_push_input(message)) {}
+            std::cout << "Got " << count_r << " messages" << std::endl;
+            count_r++;
+            }
+        usleep(100);
+    }
     return;
 }
 

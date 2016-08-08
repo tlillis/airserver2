@@ -34,3 +34,15 @@ broadcast   0
 baud        0
 use         1
 
+type        UDP
+format      JSON
+direction   OUT
+interface   0.0.0.0
+filter      0
+debug       0
+port        14555
+port_send   0
+port_bind   0
+broadcast   0
+baud        0
+use         1

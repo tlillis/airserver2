@@ -66,7 +66,9 @@ for file in xml_files:
 			#print(field.attrib)
 			try:
 				cpp_file.write(indent+indent+indent+indent+'<< "\\",\\"'+field.get('name')+'\\":\\""') # JSON tag
-				if field.get('type') == 'uint8_t':
+				if field.get('type') == 'int8_t':
+					cpp_file.write(' << static_cast<int16_t>('+msg_name_l+'.'+field.get('name')+')\n')
+				elif field.get('type') == 'uint8_t':
 					cpp_file.write(' << unsigned('+msg_name_l+'.'+field.get('name')+')\n')
 				elif field.get('type') == 'uint8_t_mavlink_version': # Cant print this type
 					pass

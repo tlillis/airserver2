@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
                 input_q.push(message);
             }
         }
+        
         if(input_q.size()) {
             for(uint16_t i = 0; i < output_threads.size(); i++) {
                 Message message;
@@ -62,8 +63,6 @@ int main(int argc, char* argv[]) {
             }
             input_q.pop();
         }
-        
-        
         
         for(uint16_t i = 0; i < output_threads.size(); i++) {
             Message message;

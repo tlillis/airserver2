@@ -6,6 +6,7 @@
 
 #include "../include/airserver/mavlink.h"
 
+#define MAX_MESSAGE_SIZE 1024
 
 struct Message {
     uint64_t timestamp;
