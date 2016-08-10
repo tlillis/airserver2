@@ -17,6 +17,8 @@
 
 #include "../include/messages.h"
 
+#define HEADER_SIZE 4
+
 using namespace std;
 
 class Interface_Thread {

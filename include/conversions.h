@@ -9,6 +9,6 @@
 
 int mav_to_json(Message &message);
 
-int json_to_mav(char * json_message);
+int json_to_mav(Message &message);
 
 #endif // CONVERSIONS

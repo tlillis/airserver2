@@ -28,7 +28,10 @@ cpp_file.write('#include <string>\n')
 cpp_file.write('#include <sstream>\n\n')
 
 cpp_file.write('#include "../include/messages.h"\n\n')
+cpp_file.write('#include "../include/jsmn.h"\n\n')
 
+
+## Mavlink to JSON conversion
 cpp_file.write('int mav_to_json(Message &message) {\n\n')
 cpp_file.write(indent+'int msgid = message.mavlink.msgid;\n')
 cpp_file.write(indent+'int sysid = message.mavlink.sysid;\n')
@@ -93,5 +96,37 @@ cpp_file.write(indent+indent+indent+'return 0;\n')
 cpp_file.write('\n')
 
 cpp_file.write(indent+'}\n')
+cpp_file.write(indent+'return -1;\n')
+cpp_file.write('}\n')
+
+
+## JSON to MAVLINK
+
+cpp_file.write('int json_to_mav(Message &message) {\n\n')
+
+cpp_file.write(indent+'int i,r;\n')
+cpp_file.write(indent+'jsmn_parser p;\n')
+cpp_file.write(indent+'jsmntok_t t[128]; /* We expect no more than 128 tokens */\n\n')
+
+cpp_file.write(indent+'jsmn_init(&p);\n\n')
+cpp_file.write(indent+'r = jsmn_parse(&p, message.json.c_str(), strlen(message.json.c_str()), t, sizeof(t)/sizeof(t[0]));\n')
+cpp_file.write(indent+'if (r < 0) {\n')
+cpp_file.write(indent+indent+'printf("Failed to parse JSON: %d\\n", r);\n')
+cpp_file.write(indent+indent+'return 1;\n')
+cpp_file.write(indent+'}\n\n')
+
+cpp_file.write(indent+'/* Assume the top-level element is an object */\n')
+cpp_file.write(indent+'if (r < 1 || t[0].type != JSMN_OBJECT) {\n')
+cpp_file.write(indent+indent+'printf("Object expected\\n");\n')
+cpp_file.write(indent+indent+'return 1;\n')
+cpp_file.write(indent+'}\n\n')
+
+cpp_file.write(indent+'if(jsoneq(message.json.c_str(), &t[0], "type")) i = 0;\n')
+cpp_file.write(indent+'if(jsoneq(message.json.c_str(), &t[0], "type")) i = 1;\n')
+cpp_file.write(indent+'else return -1;\n')
+
+
+cpp_file.write(indent+'for\n')
+
 cpp_file.write(indent+'return -1;\n')
 cpp_file.write('}\n')

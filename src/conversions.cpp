@@ -1,12 +1,22 @@
 // This file was created using AirServer tool "con_gen.py"
 // Generated cpp code for converting mavlink to json
-// This code was generated on 05/08/2016 at 03:17:35
+// This code was generated on 10/08/2016 at 04:43:02
 
 #include "../include/conversions.h"
 #include <string>
 #include <sstream>
 
 #include "../include/messages.h"
+
+#include "../include/jsmn.h"
+
+static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
+	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
+			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+		return 0;
+	}
+	return -1;
+}
 
 int mav_to_json(Message &message) {
 
@@ -3274,5 +3284,30 @@ int mav_to_json(Message &message) {
             return 0;
 
     }
+    return -1;
+}
+int json_to_mav(Message &message) {
+
+    int i,r;
+    jsmn_parser p;
+    jsmntok_t t[128]; /* We expect no more than 128 tokens */
+
+    jsmn_init(&p);
+
+    r = jsmn_parse(&p, message.json.c_str(), strlen(message.json.c_str()), t, sizeof(t)/sizeof(t[0]));
+    if (r < 0) {
+        printf("Failed to parse JSON: %d\n", r);
+        return 1;
+    }
+
+    /* Assume the top-level element is an object */
+    if (r < 1 || t[0].type != JSMN_OBJECT) {
+        printf("Object expected\n");
+        return 1;
+    }
+
+    if(jsoneq(message.json.c_str(), &t[0], "type")) i = 0;
+    if(jsoneq(message.json.c_str(), &t[0], "type")) i = 1;
+    else return -1;
     return -1;
 }
