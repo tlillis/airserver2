@@ -79,6 +79,8 @@ class Serial_Thread: public Interface_Thread {
         void interface_json();
         void interface_mavlink();
         void interface_vectornav();
+        void vector_parse();
+        char buffer[218];
     public:
         Serial_Thread(std::string port, uint32_t baud, uint8_t format, uint8_t debug, uint16_t thread_number);
         void thread_start();

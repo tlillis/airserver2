@@ -290,27 +290,96 @@ void Serial_Thread::interface_vectornav() {
     pFile = fopen(oss.str().c_str(), "wb");
     
     char * port = (char*)_port.c_str();
-    int count_r = 0;
     int baud = _baud;
     
     const uint8_t MESSAGE_SIZE = 218;                                                                                                 
     //const uint8_t HEADER_SIZE = 4;
     
+    uint8_t byte_i = 0;
+    
                                                     //0xFA 0x01 0xFF 0xFF    
-    //const uint32_t EXPECTED_HEADER = 4194435071;    //11111010 00000001 11111111 11111111
+    //const uint32_t EXPECTED_HEADER = 4194435071;  //11111010 00000001 11111111 11111111
                                                     //0xFA 0x00 0xFF 0xFF    
-    //const uint32_t EXPECTED_HEADER = 4194369535;    //11111010 00000000 11111111 11111111
+    const uint32_t EXPECTED_HEADER = 4194369535;    //11111010 00000000 11111111 11111111
     
     char buffer[MESSAGE_SIZE];
-    //char header[HEADER_SIZE];
+    char header[HEADER_SIZE];
 
     Serial_Port serial_port(port, baud);
     char buf;
-    //uint8_t sync = 0xFA; 
-    //uint8_t group = 0x00;
-    //uint16_t field = 0x00;
-    //uint16_t field2 = 0x00;
-    //uint16_t crc = 0;
+
+    serial_port.start();
+    serial_port.read_message_raw(buf);
+    if (pFile!=NULL) {
+        if(fwrite(&buf, sizeof(char), 1, pFile)) {
+            fflush(pFile);
+        }
+    }
+    
+    while(1) {
+        std::cout << std::hex << *(uint32_t*)header << std::endl;
+        if(*(uint32_t*)header != EXPECTED_HEADER) {
+            if(serial_port.status == 1) {
+                if(serial_port.read_message_raw(buf)) {
+                    if (pFile!=NULL) {
+                        if(fwrite(&buf, sizeof(char), 1, pFile)) {
+                            fflush(pFile);
+                        }
+                    }
+                    if((unsigned char) buf != 0xFA) {
+                    
+                    } else {
+                        header[0] = 0xFA;
+                        for (int i = 1;i < HEADER_SIZE; i++) { // Read 4 bytes from serial to check agaisnt expected header
+                            while(serial_port.status != 1) {
+                            }
+                            if (serial_port.status == 1) {
+                                serial_port.read_message_raw(buf);
+                                if (pFile!=NULL) {
+                                    if(fwrite(&buf, sizeof(char), 1, pFile)) {
+                                        fflush(pFile);
+                                    }
+                                }
+                                header[i] = (unsigned char)buf;
+                            }
+                        }
+                    }
+                }
+            }
+        
+        } else {
+            std::cout << "Serial port check" << std::endl;
+            if (serial_port.status == 1) { // Add bytes following header to message for parsing
+                std::cout << "Serial port read" << std::endl;
+                serial_port.read_message_raw(buf);
+                std::cout << "File check" << std::endl;
+                if (pFile!=NULL) {
+                    std::cout << "file write" << std::endl;
+                    if(fwrite(&buf, sizeof(char), 1, pFile)) {
+                        fflush(pFile);
+                    }
+                }                                        
+                buffer[byte_i] = buf;
+                byte_i++;
+            }
+            if (byte_i == MESSAGE_SIZE) { //Once the message reaches the end
+                memset(header,0,strlen(header)); //reset check for header
+                byte_i = 0;
+                vector_parse();
+            }
+        }
+    }
+    return;
+}
+
+void Serial_Thread::vector_parse() {
+    Message message;
+    applyTimestamp(message);
+    
+    mavlink_message_t message_mavlink;
+    
+    int system_type = 10;                                                                                                             
+    int autopilot_type = 10;
     
     uint64_t time_startup = 0;
     uint64_t time_gps = 0;
@@ -328,157 +397,110 @@ void Serial_Thread::interface_vectornav() {
     float imu_rate[3];
     float imu_accel[3];
     float mag[3];
-    float temp;
-    float pres;
-    float dtime;
+    float temp = 0;
+    float pres = 0;
+    float dtime = 0;
     float dtheta[3];
     float dvel[3];
-    uint16_t ins_status;
-    uint32_t sync_ln_cnt;
-    uint64_t time_gps_pps;
+    uint16_t ins_status = 0;
+    uint32_t sync_ln_cnt = 0;
+    uint64_t time_gps_pps = 0;
     
-    int system_type = 10;                                                                                                             
-    int autopilot_type = 10;
-
-    
-    uint8_t mav_buf[MAVLINK_MAX_PACKET_LEN]; 
-    mavlink_message_t msg_vector;
-
-    serial_port.start();
-    
-    uint16_t buffer_i = 0;
-    
-    //uint8_t got_header = 0;
-
-    while(1) {
-        if (serial_port.status == 1) {
-            serial_port.read_message_raw(buf);
-            if (pFile!=NULL) {
-                if(fwrite(&buf, sizeof(char), 1, pFile)) {
-                    fflush(pFile);
-                }
-            }
-            buffer_i++;
-        }
-        else {
-            break;
-        }
-        
-        //if(*(uint32_t*)header != EXPECTED_HEADER) {
+    time_startup = *(uint64_t*)buffer;
+    time_gps = *(uint64_t*)(buffer + 8);
+    time_syncln = *(uint64_t*)(buffer + 16);
+    yaw = *(float*)(buffer+24);
+    pitch = *(float*)(buffer+28);
+    roll = *(float*)(buffer+32);
+    qtn[0] = *(float*)(buffer+36);
+    qtn[1] = *(float*)(buffer+40);
+    qtn[2] = *(float*)(buffer+44);
+    qtn[3] = *(float*)(buffer+48);
+    rate[0] = *(float*)(buffer+52);
+    rate[1] = *(float*)(buffer+56);
+    rate[2] = *(float*)(buffer+60);
+    latitude = *(double*)(buffer+64);
+    longitude = *(double*)(buffer+72);
+    altitude = *(double*)(buffer+80);
+    vel[0] = *(float*)(buffer+88);
+    vel[1] = *(float*)(buffer+92);
+    vel[2] = *(float*)(buffer+96);
+    accel[0] = *(float*)(buffer+100);
+    accel[1] = *(float*)(buffer+104);
+    accel[2] = *(float*)(buffer+108);
+    imu_rate[0] = *(float*)(buffer+112);
+    imu_rate[1] = *(float*)(buffer+116);
+    imu_rate[2] = *(float*)(buffer+120);
+    imu_accel[3] = *(float*)(buffer+124);
+    imu_accel[4] = *(float*)(buffer+128);
+    imu_accel[5] = *(float*)(buffer+132);
+    mag[0] = *(float*)(buffer+136);
+    mag[1] = *(float*)(buffer+140);
+    mag[2] = *(float*)(buffer+144);
+    temp = *(float*)(buffer+148);
+    pres = *(float*)(buffer+152);
+    dtime = *(float*)(buffer+156);
+    dtheta[0] = *(float*)(buffer+160);
+    dtheta[1] = *(float*)(buffer+164);
+    dtheta[2] = *(float*)(buffer+168);
+    dvel[0] = *(float*)(buffer+172);
+    dvel[1] = *(float*)(buffer+176);
+    dvel[2] = *(float*)(buffer+180);
+    ins_status = *(uint16_t*)(buffer+184);
+    sync_ln_cnt = *(uint32_t*)(buffer+186);
+    time_gps_pps = *(uint64_t*)(buffer+190);
             
-        //}
-        
-        if (buf == 0xFA) {
-            buffer_i = 0;
-            //char header[HEADER_SIZE];
-            //header[0] = buf;
-            for(int i = 1; i < HEADER_SIZE; i++) {
-                serial_port.read_message_raw(buf);
-            }
-            time_startup = *(uint64_t*)buffer;
-            time_gps = *(uint64_t*)(buffer + 8);
-            time_syncln = *(uint64_t*)(buffer + 16);
-            yaw = *(float*)(buffer+24);
-            pitch = *(float*)(buffer+28);
-            roll = *(float*)(buffer+32);
-            qtn[0] = *(float*)(buffer+36);
-            qtn[1] = *(float*)(buffer+40);
-            qtn[2] = *(float*)(buffer+44);
-            qtn[3] = *(float*)(buffer+48);
-            rate[0] = *(float*)(buffer+52);
-            rate[1] = *(float*)(buffer+56);
-            rate[2] = *(float*)(buffer+60);
-            latitude = *(double*)(buffer+64);
-            longitude = *(double*)(buffer+72);
-            altitude = *(double*)(buffer+80);
-            vel[0] = *(float*)(buffer+88);
-            vel[1] = *(float*)(buffer+92);
-            vel[2] = *(float*)(buffer+96);
-            accel[0] = *(float*)(buffer+100);
-            accel[1] = *(float*)(buffer+104);
-            accel[2] = *(float*)(buffer+108);
-            imu_rate[0] = *(float*)(buffer+112);
-            imu_rate[1] = *(float*)(buffer+116);
-            imu_rate[2] = *(float*)(buffer+120);
-            imu_accel[3] = *(float*)(buffer+124);
-            imu_accel[4] = *(float*)(buffer+128);
-            imu_accel[5] = *(float*)(buffer+132);
-            mag[0] = *(float*)(buffer+136);
-            mag[1] = *(float*)(buffer+140);
-            mag[2] = *(float*)(buffer+144);
-            temp = *(float*)(buffer+148);
-            pres = *(float*)(buffer+152);
-            dtime = *(float*)(buffer+156);
-            dtheta[0] = *(float*)(buffer+160);
-            dtheta[1] = *(float*)(buffer+164);
-            dtheta[2] = *(float*)(buffer+168);
-            dvel[0] = *(float*)(buffer+172);
-            dvel[1] = *(float*)(buffer+176);
-            dvel[2] = *(float*)(buffer+180);
-            ins_status = *(uint16_t*)(buffer+184);
-            sync_ln_cnt = *(uint32_t*)(buffer+186);
-            time_gps_pps = *(uint64_t*)(buffer+190);
-            
-            mavlink_msg_vector_nav_pack(system_type, 
-                                    autopilot_type, 
-                                    &msg_vector, 
-                                    time_startup, 
-                                    time_startup, 
-                                    time_gps,                                                                                        
-                                    time_syncln, 
-                                    yaw, 
-                                    pitch, 
-                                    roll,
-                                    qtn[0],
-                                    qtn[1],
-                                    qtn[2],
-                                    qtn[3],
-                                    rate[0],
-                                    rate[1],
-                                    rate[2],
-                                    latitude,
-                                    longitude,
-                                    altitude,
-                                    vel[0],
-                                    vel[1],
-                                    vel[2],
-                                    accel[0],
-                                    accel[1],
-                                    accel[2],
-                                    imu_rate[0],
-                                    imu_rate[1],
-                                    imu_rate[2],
-                                    imu_accel[0],
-                                    imu_accel[1],
-                                    imu_accel[2],
-                                    mag[0],
-                                    mag[1],
-                                    mag[2],
-                                    temp,
-                                    pres,
-                                    dtime,
-                                    dtheta[0],
-                                    dtheta[1],
-                                    dtheta[2],
-                                    dvel[0],                                                                               
-                                    dvel[1],
-                                    dvel[2],
-                                    ins_status,
-                                    sync_ln_cnt,
-                                    time_gps_pps);
-
-            mavlink_msg_to_send_buffer(mav_buf, &msg_vector);
-            
-            Message message;
-            applyTimestamp(message);
-            //json_to_mav(message);
-            while(try_push_input(message)) {}
-            std::cout << "Got " << count_r << " messages" << std::endl;
-            count_r++;
-            }
-        usleep(100);
-    }
-    return;
+    mavlink_msg_vector_nav_pack(system_type, 
+                            autopilot_type, 
+                            &message_mavlink, 
+                            time_startup, 
+                            time_startup, 
+                            time_gps,                                                                                        
+                            time_syncln, 
+                            yaw, 
+                            pitch, 
+                            roll,
+                            qtn[0],
+                            qtn[1],
+                            qtn[2],
+                            qtn[3],
+                            rate[0],
+                            rate[1],
+                            rate[2],
+                            latitude,
+                            longitude,
+                            altitude,
+                            vel[0],
+                            vel[1],
+                            vel[2],
+                            accel[0],
+                            accel[1],
+                            accel[2],
+                            imu_rate[0],
+                            imu_rate[1],
+                            imu_rate[2],
+                            imu_accel[0],
+                            imu_accel[1],
+                            imu_accel[2],
+                            mag[0],
+                            mag[1],
+                            mag[2],
+                            temp,
+                            pres,
+                            dtime,
+                            dtheta[0],
+                            dtheta[1],
+                            dtheta[2],
+                            dvel[0],                                                                               
+                            dvel[1],
+                            dvel[2],
+                            ins_status,
+                            sync_ln_cnt,
+                            time_gps_pps);
+                            
+    message.mavlink = message_mavlink;
+    mav_to_json(message);
+    std::cout << message.json << std::endl;
 }
 
 void *Serial_Thread::handler(void) {

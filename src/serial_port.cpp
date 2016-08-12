@@ -244,7 +244,7 @@ read_message_raw(char &buf)
     // Couldn't read from port
     else
     {
-        fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
+        //fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
     }
     // Done!
     return success;
@@ -549,6 +549,13 @@ _setup_port(int baud, int data_bits, int stop_bits, bool parity, bool hardware_c
             break;
         case 921600:
             if (cfsetispeed(&config, B921600) < 0 || cfsetospeed(&config, B921600) < 0)
+            {
+                fprintf(stderr, "\nERROR: Could not set desired baud rate of %d Baud\n", baud);
+                return false;
+            }
+            break;
+        case 230400:
+            if (cfsetispeed(&config, B230400) < 0 || cfsetospeed(&config, B230400) < 0)
             {
                 fprintf(stderr, "\nERROR: Could not set desired baud rate of %d Baud\n", baud);
                 return false;

@@ -50,6 +50,9 @@ int8_t handle_config_file(std::string filename,std::vector <Thread_Config> &conf
                     else if(col2 == "JSON") {
                         configs[interface_number].format = JSON;
                     }
+                    else if(col2 == "VECTORNAV") {
+                        configs[interface_number].format = VECTORNAV;
+                    }
                     else {
                         cout << "UKNOWN FORMAT=" << col2 << " FOR INTERFACE NUMBER " << static_cast<int16_t>(interface_number) << endl;
                     }
