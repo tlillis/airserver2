@@ -121,7 +121,8 @@ int8_t split_thread_directions(std::vector <Interface_Thread*> &input_threads,
             case UDP: 
             {
                 UDP_Thread *udp = new UDP_Thread(configs[i].interface,
-                                                    configs[i].port,
+                                                    configs[i].port_send,
+                                                    configs[i].port_bind,
                                                     configs[i].format,
                                                     configs[i].debug,
                                                     i);

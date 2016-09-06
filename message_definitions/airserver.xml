@@ -14,9 +14,9 @@
 			<field name="rh1" type="float">RH1</field>
 			<field name="rh2" type="float">RH2</field>
 			<field name="internal_temp" type="float">Internal Temperature</field>
-	     	</message>
+	    </message>
 
-	    	<message name="VECTOR_NAV" id="241">
+	    <message name="VECTOR_NAV" id="241">
 			<description>
 
 			</description>
@@ -43,12 +43,6 @@
 			<field name="accel_0" type="float">The estimated acceleration in the body frame, given in m/s^2.</field>
 			<field name="accel_1" type="float">The estimated acceleration in the body frame, given in m/s^2.</field>
 			<field name="accel_2" type="float">The estimated acceleration in the body frame, given in m/s^2.</field>
-			<field name="imu_0" type="float">IMU angular rate</field>
-			<field name="imu_1" type="float">IMU angular rate</field>
-			<field name="imu_2" type="float">IMU angular rate</field>
-			<field name="imu_3" type="float">IMU acceleration measurement</field>
-			<field name="imu_4" type="float">IMU acceleration measurement</field>
-			<field name="imu_5" type="float">IMU acceleration measurement</field>
 			<field name="mag_pres_0" type="float">The compensated magnetic, temperature, and pressure measurements from the IMU.</field>
 			<field name="mag_pres_1" type="float">The compensated magnetic, temperature, and pressure measurements from the IMU.</field>
 			<field name="mag_pres_2" type="float">The compensated magnetic, temperature, and pressure measurements from the IMU.</field>
@@ -64,6 +58,13 @@
 			<field name="ins_status" type="uint16_t">The INS status bitfield.</field>
 			<field name="syncln_cnt" type="uint32_t">The number of SyncIn trigger events that have occurred.</field>
 			<field name="gps_pps" type="uint64_t">The time since the last GPS PPS trigger event expressed in nano seconds.f</field>
+			<field name="utc_year" type="int8_t">The current UTC time. The year is given as a signed byte year offset from the year 2000.</field>
+			<field name="utc_month" type="uint8_t">The current UTC time.</field>
+			<field name="utc_day" type="uint8_t">The current UTC time.</field>
+			<field name="utc_hour" type="uint8_t">The current UTC time.</field>
+			<field name="utc_min" type="uint8_t">The current UTC time.</field>
+			<field name="utc_sec" type="uint8_t">The current UTC time.</field>
+			<field name="utc_ms" type="uint16_t">The current UTC time.</field>
 		</message>
 
 		<message name="AEROPROBE" id="242">
@@ -80,6 +81,78 @@
 			<field name="ps" type="float">Static Pressure</field>
 			<field name="pt" type="float">Total Pressure</field>
 			<field name="tc" type="float">Thermocouple Temp</field>
+		</message>
+
+		<message name="TEENSY_TEMPERATURE" id="243">
+			<description>
+
+			</description>
+			<field name="time_usec" type="uint64_t">Image timestamp (microseconds since UNIX epoch, according to camera clock)</field>
+			<field name="time_device" type="uint32_t">Sample Number</field>
+			<field name="temp_1" type="uint16_t">temperature from sensor 1</field>
+			<field name="temp_2" type="uint16_t">temperature from sensor 2</field>
+			<field name="temp_3" type="uint16_t">temperature from sensor 3</field>
+			<field name="temp_4" type="uint16_t">temperature from sensor 4</field>
+			<field name="temp_5" type="uint16_t">temperature from sensor 5</field>
+			<field name="temp_6" type="uint16_t">temperature from sensor 6</field>
+			<field name="temp_7" type="uint16_t">temperature from sensor 7</field>
+			<field name="temp_8" type="uint16_t">temperature from sensor 8</field>
+			<field name="temp_9" type="uint16_t">temperature from sensor 9</field>
+			<field name="temp_10" type="uint16_t">temperature from sensor 10</field>
+			<field name="temp_11" type="uint16_t">temperature from sensor 11</field>
+			<field name="temp_12" type="uint16_t">temperature from sensor 12</field>
+			<field name="temp_13" type="uint16_t">temperature from sensor 13</field>
+			<field name="temp_14" type="uint16_t">temperature from sensor 14</field>
+			<field name="temp_15" type="uint16_t">temperature from sensor 15</field>
+			<field name="temp_16" type="uint16_t">temperature from sensor 16</field>
+		</message>
+
+		<message name="TEENSY_PRESSURE" id="244">
+			<description>
+
+			</description>
+			<field name="time_usec" type="uint64_t">Image timestamp (microseconds since UNIX epoch, according to camera clock)</field>
+			<field name="time_device" type="uint32_t">Sample Number</field>
+			<field name="press_1" type="uint16_t">pressure from sensor 1</field>
+			<field name="press_2" type="uint16_t">pressure from sensor 2</field>
+			<field name="press_3" type="uint16_t">pressure from sensor 3</field>
+			<field name="press_4" type="uint16_t">pressure from sensor 4</field>
+			<field name="press_5" type="uint16_t">pressure from sensor 5</field>
+			<field name="press_6" type="uint16_t">pressure from sensor 6</field>
+			<field name="press_7" type="uint16_t">pressure from sensor 7</field>
+			<field name="press_8" type="uint16_t">pressure from sensor 8</field>
+			<field name="press_9" type="uint16_t">pressure from sensor 9</field>
+			<field name="press_10" type="uint16_t">pressure from sensor 10</field>
+			<field name="press_11" type="uint16_t">pressure from sensor 11</field>
+			<field name="press_12" type="uint16_t">pressure from sensor 12</field>
+			<field name="press_13" type="uint16_t">pressure from sensor 13</field>
+			<field name="press_14" type="uint16_t">pressure from sensor 14</field>
+			<field name="press_15" type="uint16_t">pressure from sensor 15</field>
+			<field name="press_16" type="uint16_t">pressure from sensor 16</field>
+		</message>
+
+		<message name="TEENSY_HUMIDITY" id="245">
+			<description>
+
+			</description>
+			<field name="time_usec" type="uint64_t">Image timestamp (microseconds since UNIX epoch, according to camera clock)</field>
+			<field name="time_device" type="uint32_t">Sample Number</field>
+			<field name="humid_1" type="uint16_t">humidity from sensor 1</field>
+			<field name="humid_2" type="uint16_t">humidity from sensor 2</field>
+			<field name="humid_3" type="uint16_t">humidity from sensor 3</field>
+			<field name="humid_4" type="uint16_t">humidity from sensor 4</field>
+			<field name="humid_5" type="uint16_t">humidity from sensor 5</field>
+			<field name="humid_6" type="uint16_t">humidity from sensor 6</field>
+			<field name="humid_7" type="uint16_t">humidity from sensor 7</field>
+			<field name="humid_8" type="uint16_t">humidity from sensor 8</field>
+			<field name="humid_9" type="uint16_t">humidity from sensor 9</field>
+			<field name="humid_10" type="uint16_t">humidity from sensor 10</field>
+			<field name="humid_11" type="uint16_t">humidity from sensor 11</field>
+			<field name="humid_12" type="uint16_t">humidity from sensor 12</field>
+			<field name="humid_13" type="uint16_t">humidity from sensor 13</field>
+			<field name="humid_14" type="uint16_t">humidity from sensor 14</field>
+			<field name="humid_15" type="uint16_t">humidity from sensor 15</field>
+			<field name="humid_16" type="uint16_t">humidity from sensor 16</field>
 		</message>
 	</messages>
 </mavlink>

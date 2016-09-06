@@ -17,7 +17,7 @@
 
 #include "../include/messages.h"
 
-#define HEADER_SIZE 4
+#define HEADER_SIZE 6
 
 using namespace std;
 
@@ -56,7 +56,6 @@ class Interface_Thread {
 
 class UDP_Thread: public Interface_Thread {
     private:
-        uint32_t _port;
         uint32_t _port_send;
         uint32_t _port_bind;
         uint8_t _broadcast;
@@ -66,7 +65,7 @@ class UDP_Thread: public Interface_Thread {
         void interface_mavlink();
         void interface_json();
     public:
-        UDP_Thread(std::string address, uint32_t port, uint8_t format, uint8_t debug, uint16_t thread_number);
+        UDP_Thread(std::string address, uint32_t port_send, uint32_t port_bind, uint8_t format, uint8_t debug, uint16_t thread_number);
         void thread_start();
 };
 
@@ -79,8 +78,8 @@ class Serial_Thread: public Interface_Thread {
         void interface_json();
         void interface_mavlink();
         void interface_vectornav();
-        void vector_parse();
-        char buffer[218];
+        void vector_parse(char buffer[218]);
+        //char buffer[218];
     public:
         Serial_Thread(std::string port, uint32_t baud, uint8_t format, uint8_t debug, uint16_t thread_number);
         void thread_start();

@@ -60,7 +60,7 @@ for file in xml_files:
 		#cpp_file.write(indent+indent+indent+'// '+desc+'\n')
 		cpp_file.write(indent+indent+indent+'mavlink_'+msg_name_l+'_t '+msg_name_l+';\n')
 		cpp_file.write(indent+indent+indent+'mavlink_msg_'+msg_name_l+'_decode(&message.mavlink, &('+msg_name_l+'));\n')
-                cpp_file.write(indent+indent+indent+'stream << "{\\"airserver_time\\":" << message.timestamp\n')
+                cpp_file.write(indent+indent+indent+'stream << "{\\"airserver_time_micros\\":" << message.timestamp\n')
                 cpp_file.write(indent+indent+indent+indent+'<< "\\",\\"type\\":\\"'+msg_name+'"\n')
                 #cpp_file.write(indent+indent+indent+'stream << "{\\"type\\":\\"'+msg_name+'"\n')
 		cpp_file.write(indent+indent+indent+indent+'<< "\\",\\"system_id\\":\\"" << sysid\n')

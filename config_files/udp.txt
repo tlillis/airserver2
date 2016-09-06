@@ -1,0 +1,61 @@
+#######################
+# Example Config File #
+#######################
+
+# WARNING: Only able to handle
+#   4 mavlink serial interfaces
+#   at this time. This is a 
+#   restriction of the mavlink
+#   protocol.
+
+type        UDP
+format      MAVLINK
+direction   IN
+interface   127.0.0.1
+filter      0
+debug       0
+port        0
+port_send   0
+port_bind   14550
+broadcast   0
+baud        115200
+use         1
+
+type        LOGGING
+format      JSON
+direction   OUT
+interface   data
+filter      0
+debug       0
+port        0
+port_send   0
+port_bind   0
+broadcast   0
+baud        0
+use         1
+
+type        UDP
+format      MAVLINK
+direction   OUT
+interface   0.0.0.0
+filter      0
+debug       0
+port        14555
+port_send   0
+port_bind   14555
+broadcast   0
+baud        0
+use         1
+
+type        UDP
+format      JSON
+direction   OUT
+interface   0.0.0.0
+filter      0
+debug       0
+port        14560
+port_send   0
+port_bind   14560
+broadcast   0
+baud        0
+use         1

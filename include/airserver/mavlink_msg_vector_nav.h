@@ -28,12 +28,6 @@ typedef struct __mavlink_vector_nav_t
  float accel_0; ///< The estimated acceleration in the body frame, given in m/s^2.
  float accel_1; ///< The estimated acceleration in the body frame, given in m/s^2.
  float accel_2; ///< The estimated acceleration in the body frame, given in m/s^2.
- float imu_0; ///< IMU angular rate
- float imu_1; ///< IMU angular rate
- float imu_2; ///< IMU angular rate
- float imu_3; ///< IMU acceleration measurement
- float imu_4; ///< IMU acceleration measurement
- float imu_5; ///< IMU acceleration measurement
  float mag_pres_0; ///< The compensated magnetic, temperature, and pressure measurements from the IMU.
  float mag_pres_1; ///< The compensated magnetic, temperature, and pressure measurements from the IMU.
  float mag_pres_2; ///< The compensated magnetic, temperature, and pressure measurements from the IMU.
@@ -48,19 +42,26 @@ typedef struct __mavlink_vector_nav_t
  float delta_theta_6; ///< delta velocity
  uint32_t syncln_cnt; ///< The number of SyncIn trigger events that have occurred.
  uint16_t ins_status; ///< The INS status bitfield.
+ uint16_t utc_ms; ///< The current UTC time.
+ int8_t utc_year; ///< The current UTC time. The year is given as a signed byte year offset from the year 2000.
+ uint8_t utc_month; ///< The current UTC time.
+ uint8_t utc_day; ///< The current UTC time.
+ uint8_t utc_hour; ///< The current UTC time.
+ uint8_t utc_min; ///< The current UTC time.
+ uint8_t utc_sec; ///< The current UTC time.
 } mavlink_vector_nav_t;
 
-#define MAVLINK_MSG_ID_VECTOR_NAV_LEN 206
-#define MAVLINK_MSG_ID_241_LEN 206
+#define MAVLINK_MSG_ID_VECTOR_NAV_LEN 190
+#define MAVLINK_MSG_ID_241_LEN 190
 
-#define MAVLINK_MSG_ID_VECTOR_NAV_CRC 178
-#define MAVLINK_MSG_ID_241_CRC 178
+#define MAVLINK_MSG_ID_VECTOR_NAV_CRC 174
+#define MAVLINK_MSG_ID_241_CRC 174
 
 
 
 #define MAVLINK_MESSAGE_INFO_VECTOR_NAV { \
 	"VECTOR_NAV", \
-	44, \
+	45, \
 	{  { "time_usec", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_vector_nav_t, time_usec) }, \
          { "time_startup", NULL, MAVLINK_TYPE_UINT64_T, 0, 8, offsetof(mavlink_vector_nav_t, time_startup) }, \
          { "time_gps", NULL, MAVLINK_TYPE_UINT64_T, 0, 16, offsetof(mavlink_vector_nav_t, time_gps) }, \
@@ -85,26 +86,27 @@ typedef struct __mavlink_vector_nav_t
          { "accel_0", NULL, MAVLINK_TYPE_FLOAT, 0, 116, offsetof(mavlink_vector_nav_t, accel_0) }, \
          { "accel_1", NULL, MAVLINK_TYPE_FLOAT, 0, 120, offsetof(mavlink_vector_nav_t, accel_1) }, \
          { "accel_2", NULL, MAVLINK_TYPE_FLOAT, 0, 124, offsetof(mavlink_vector_nav_t, accel_2) }, \
-         { "imu_0", NULL, MAVLINK_TYPE_FLOAT, 0, 128, offsetof(mavlink_vector_nav_t, imu_0) }, \
-         { "imu_1", NULL, MAVLINK_TYPE_FLOAT, 0, 132, offsetof(mavlink_vector_nav_t, imu_1) }, \
-         { "imu_2", NULL, MAVLINK_TYPE_FLOAT, 0, 136, offsetof(mavlink_vector_nav_t, imu_2) }, \
-         { "imu_3", NULL, MAVLINK_TYPE_FLOAT, 0, 140, offsetof(mavlink_vector_nav_t, imu_3) }, \
-         { "imu_4", NULL, MAVLINK_TYPE_FLOAT, 0, 144, offsetof(mavlink_vector_nav_t, imu_4) }, \
-         { "imu_5", NULL, MAVLINK_TYPE_FLOAT, 0, 148, offsetof(mavlink_vector_nav_t, imu_5) }, \
-         { "mag_pres_0", NULL, MAVLINK_TYPE_FLOAT, 0, 152, offsetof(mavlink_vector_nav_t, mag_pres_0) }, \
-         { "mag_pres_1", NULL, MAVLINK_TYPE_FLOAT, 0, 156, offsetof(mavlink_vector_nav_t, mag_pres_1) }, \
-         { "mag_pres_2", NULL, MAVLINK_TYPE_FLOAT, 0, 160, offsetof(mavlink_vector_nav_t, mag_pres_2) }, \
-         { "mag_pres_3", NULL, MAVLINK_TYPE_FLOAT, 0, 164, offsetof(mavlink_vector_nav_t, mag_pres_3) }, \
-         { "mag_pres_4", NULL, MAVLINK_TYPE_FLOAT, 0, 168, offsetof(mavlink_vector_nav_t, mag_pres_4) }, \
-         { "delta_theta_0", NULL, MAVLINK_TYPE_FLOAT, 0, 172, offsetof(mavlink_vector_nav_t, delta_theta_0) }, \
-         { "delta_theta_1", NULL, MAVLINK_TYPE_FLOAT, 0, 176, offsetof(mavlink_vector_nav_t, delta_theta_1) }, \
-         { "delta_theta_2", NULL, MAVLINK_TYPE_FLOAT, 0, 180, offsetof(mavlink_vector_nav_t, delta_theta_2) }, \
-         { "delta_theta_3", NULL, MAVLINK_TYPE_FLOAT, 0, 184, offsetof(mavlink_vector_nav_t, delta_theta_3) }, \
-         { "delta_theta_4", NULL, MAVLINK_TYPE_FLOAT, 0, 188, offsetof(mavlink_vector_nav_t, delta_theta_4) }, \
-         { "delta_theta_5", NULL, MAVLINK_TYPE_FLOAT, 0, 192, offsetof(mavlink_vector_nav_t, delta_theta_5) }, \
-         { "delta_theta_6", NULL, MAVLINK_TYPE_FLOAT, 0, 196, offsetof(mavlink_vector_nav_t, delta_theta_6) }, \
-         { "syncln_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 200, offsetof(mavlink_vector_nav_t, syncln_cnt) }, \
-         { "ins_status", NULL, MAVLINK_TYPE_UINT16_T, 0, 204, offsetof(mavlink_vector_nav_t, ins_status) }, \
+         { "mag_pres_0", NULL, MAVLINK_TYPE_FLOAT, 0, 128, offsetof(mavlink_vector_nav_t, mag_pres_0) }, \
+         { "mag_pres_1", NULL, MAVLINK_TYPE_FLOAT, 0, 132, offsetof(mavlink_vector_nav_t, mag_pres_1) }, \
+         { "mag_pres_2", NULL, MAVLINK_TYPE_FLOAT, 0, 136, offsetof(mavlink_vector_nav_t, mag_pres_2) }, \
+         { "mag_pres_3", NULL, MAVLINK_TYPE_FLOAT, 0, 140, offsetof(mavlink_vector_nav_t, mag_pres_3) }, \
+         { "mag_pres_4", NULL, MAVLINK_TYPE_FLOAT, 0, 144, offsetof(mavlink_vector_nav_t, mag_pres_4) }, \
+         { "delta_theta_0", NULL, MAVLINK_TYPE_FLOAT, 0, 148, offsetof(mavlink_vector_nav_t, delta_theta_0) }, \
+         { "delta_theta_1", NULL, MAVLINK_TYPE_FLOAT, 0, 152, offsetof(mavlink_vector_nav_t, delta_theta_1) }, \
+         { "delta_theta_2", NULL, MAVLINK_TYPE_FLOAT, 0, 156, offsetof(mavlink_vector_nav_t, delta_theta_2) }, \
+         { "delta_theta_3", NULL, MAVLINK_TYPE_FLOAT, 0, 160, offsetof(mavlink_vector_nav_t, delta_theta_3) }, \
+         { "delta_theta_4", NULL, MAVLINK_TYPE_FLOAT, 0, 164, offsetof(mavlink_vector_nav_t, delta_theta_4) }, \
+         { "delta_theta_5", NULL, MAVLINK_TYPE_FLOAT, 0, 168, offsetof(mavlink_vector_nav_t, delta_theta_5) }, \
+         { "delta_theta_6", NULL, MAVLINK_TYPE_FLOAT, 0, 172, offsetof(mavlink_vector_nav_t, delta_theta_6) }, \
+         { "syncln_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 176, offsetof(mavlink_vector_nav_t, syncln_cnt) }, \
+         { "ins_status", NULL, MAVLINK_TYPE_UINT16_T, 0, 180, offsetof(mavlink_vector_nav_t, ins_status) }, \
+         { "utc_ms", NULL, MAVLINK_TYPE_UINT16_T, 0, 182, offsetof(mavlink_vector_nav_t, utc_ms) }, \
+         { "utc_year", NULL, MAVLINK_TYPE_INT8_T, 0, 184, offsetof(mavlink_vector_nav_t, utc_year) }, \
+         { "utc_month", NULL, MAVLINK_TYPE_UINT8_T, 0, 185, offsetof(mavlink_vector_nav_t, utc_month) }, \
+         { "utc_day", NULL, MAVLINK_TYPE_UINT8_T, 0, 186, offsetof(mavlink_vector_nav_t, utc_day) }, \
+         { "utc_hour", NULL, MAVLINK_TYPE_UINT8_T, 0, 187, offsetof(mavlink_vector_nav_t, utc_hour) }, \
+         { "utc_min", NULL, MAVLINK_TYPE_UINT8_T, 0, 188, offsetof(mavlink_vector_nav_t, utc_min) }, \
+         { "utc_sec", NULL, MAVLINK_TYPE_UINT8_T, 0, 189, offsetof(mavlink_vector_nav_t, utc_sec) }, \
          } \
 }
 
@@ -138,12 +140,6 @@ typedef struct __mavlink_vector_nav_t
  * @param accel_0 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_1 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_2 The estimated acceleration in the body frame, given in m/s^2.
- * @param imu_0 IMU angular rate
- * @param imu_1 IMU angular rate
- * @param imu_2 IMU angular rate
- * @param imu_3 IMU acceleration measurement
- * @param imu_4 IMU acceleration measurement
- * @param imu_5 IMU acceleration measurement
  * @param mag_pres_0 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_1 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_2 The compensated magnetic, temperature, and pressure measurements from the IMU.
@@ -159,10 +155,17 @@ typedef struct __mavlink_vector_nav_t
  * @param ins_status The INS status bitfield.
  * @param syncln_cnt The number of SyncIn trigger events that have occurred.
  * @param gps_pps The time since the last GPS PPS trigger event expressed in nano seconds.f
+ * @param utc_year The current UTC time. The year is given as a signed byte year offset from the year 2000.
+ * @param utc_month The current UTC time.
+ * @param utc_day The current UTC time.
+ * @param utc_hour The current UTC time.
+ * @param utc_min The current UTC time.
+ * @param utc_sec The current UTC time.
+ * @param utc_ms The current UTC time.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float imu_0, float imu_1, float imu_2, float imu_3, float imu_4, float imu_5, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps)
+						       uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps, int8_t utc_year, uint8_t utc_month, uint8_t utc_day, uint8_t utc_hour, uint8_t utc_min, uint8_t utc_sec, uint16_t utc_ms)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VECTOR_NAV_LEN];
@@ -190,26 +193,27 @@ static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t co
 	_mav_put_float(buf, 116, accel_0);
 	_mav_put_float(buf, 120, accel_1);
 	_mav_put_float(buf, 124, accel_2);
-	_mav_put_float(buf, 128, imu_0);
-	_mav_put_float(buf, 132, imu_1);
-	_mav_put_float(buf, 136, imu_2);
-	_mav_put_float(buf, 140, imu_3);
-	_mav_put_float(buf, 144, imu_4);
-	_mav_put_float(buf, 148, imu_5);
-	_mav_put_float(buf, 152, mag_pres_0);
-	_mav_put_float(buf, 156, mag_pres_1);
-	_mav_put_float(buf, 160, mag_pres_2);
-	_mav_put_float(buf, 164, mag_pres_3);
-	_mav_put_float(buf, 168, mag_pres_4);
-	_mav_put_float(buf, 172, delta_theta_0);
-	_mav_put_float(buf, 176, delta_theta_1);
-	_mav_put_float(buf, 180, delta_theta_2);
-	_mav_put_float(buf, 184, delta_theta_3);
-	_mav_put_float(buf, 188, delta_theta_4);
-	_mav_put_float(buf, 192, delta_theta_5);
-	_mav_put_float(buf, 196, delta_theta_6);
-	_mav_put_uint32_t(buf, 200, syncln_cnt);
-	_mav_put_uint16_t(buf, 204, ins_status);
+	_mav_put_float(buf, 128, mag_pres_0);
+	_mav_put_float(buf, 132, mag_pres_1);
+	_mav_put_float(buf, 136, mag_pres_2);
+	_mav_put_float(buf, 140, mag_pres_3);
+	_mav_put_float(buf, 144, mag_pres_4);
+	_mav_put_float(buf, 148, delta_theta_0);
+	_mav_put_float(buf, 152, delta_theta_1);
+	_mav_put_float(buf, 156, delta_theta_2);
+	_mav_put_float(buf, 160, delta_theta_3);
+	_mav_put_float(buf, 164, delta_theta_4);
+	_mav_put_float(buf, 168, delta_theta_5);
+	_mav_put_float(buf, 172, delta_theta_6);
+	_mav_put_uint32_t(buf, 176, syncln_cnt);
+	_mav_put_uint16_t(buf, 180, ins_status);
+	_mav_put_uint16_t(buf, 182, utc_ms);
+	_mav_put_int8_t(buf, 184, utc_year);
+	_mav_put_uint8_t(buf, 185, utc_month);
+	_mav_put_uint8_t(buf, 186, utc_day);
+	_mav_put_uint8_t(buf, 187, utc_hour);
+	_mav_put_uint8_t(buf, 188, utc_min);
+	_mav_put_uint8_t(buf, 189, utc_sec);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_VECTOR_NAV_LEN);
 #else
@@ -238,12 +242,6 @@ static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t co
 	packet.accel_0 = accel_0;
 	packet.accel_1 = accel_1;
 	packet.accel_2 = accel_2;
-	packet.imu_0 = imu_0;
-	packet.imu_1 = imu_1;
-	packet.imu_2 = imu_2;
-	packet.imu_3 = imu_3;
-	packet.imu_4 = imu_4;
-	packet.imu_5 = imu_5;
 	packet.mag_pres_0 = mag_pres_0;
 	packet.mag_pres_1 = mag_pres_1;
 	packet.mag_pres_2 = mag_pres_2;
@@ -258,6 +256,13 @@ static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t co
 	packet.delta_theta_6 = delta_theta_6;
 	packet.syncln_cnt = syncln_cnt;
 	packet.ins_status = ins_status;
+	packet.utc_ms = utc_ms;
+	packet.utc_year = utc_year;
+	packet.utc_month = utc_month;
+	packet.utc_day = utc_day;
+	packet.utc_hour = utc_hour;
+	packet.utc_min = utc_min;
+	packet.utc_sec = utc_sec;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_VECTOR_NAV_LEN);
 #endif
@@ -299,12 +304,6 @@ static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t co
  * @param accel_0 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_1 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_2 The estimated acceleration in the body frame, given in m/s^2.
- * @param imu_0 IMU angular rate
- * @param imu_1 IMU angular rate
- * @param imu_2 IMU angular rate
- * @param imu_3 IMU acceleration measurement
- * @param imu_4 IMU acceleration measurement
- * @param imu_5 IMU acceleration measurement
  * @param mag_pres_0 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_1 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_2 The compensated magnetic, temperature, and pressure measurements from the IMU.
@@ -320,11 +319,18 @@ static inline uint16_t mavlink_msg_vector_nav_pack(uint8_t system_id, uint8_t co
  * @param ins_status The INS status bitfield.
  * @param syncln_cnt The number of SyncIn trigger events that have occurred.
  * @param gps_pps The time since the last GPS PPS trigger event expressed in nano seconds.f
+ * @param utc_year The current UTC time. The year is given as a signed byte year offset from the year 2000.
+ * @param utc_month The current UTC time.
+ * @param utc_day The current UTC time.
+ * @param utc_hour The current UTC time.
+ * @param utc_min The current UTC time.
+ * @param utc_sec The current UTC time.
+ * @param utc_ms The current UTC time.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_vector_nav_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint64_t time_usec,uint64_t time_startup,uint64_t time_gps,uint64_t time_syncln,float yaw,float pitch,float roll,float qtn_0,float qtn_1,float qtn_2,float qtn_3,float rate_0,float rate_1,float rate_2,double lat,double lon,double alt,float vel_0,float vel_1,float vel_2,float accel_0,float accel_1,float accel_2,float imu_0,float imu_1,float imu_2,float imu_3,float imu_4,float imu_5,float mag_pres_0,float mag_pres_1,float mag_pres_2,float mag_pres_3,float mag_pres_4,float delta_theta_0,float delta_theta_1,float delta_theta_2,float delta_theta_3,float delta_theta_4,float delta_theta_5,float delta_theta_6,uint16_t ins_status,uint32_t syncln_cnt,uint64_t gps_pps)
+						           uint64_t time_usec,uint64_t time_startup,uint64_t time_gps,uint64_t time_syncln,float yaw,float pitch,float roll,float qtn_0,float qtn_1,float qtn_2,float qtn_3,float rate_0,float rate_1,float rate_2,double lat,double lon,double alt,float vel_0,float vel_1,float vel_2,float accel_0,float accel_1,float accel_2,float mag_pres_0,float mag_pres_1,float mag_pres_2,float mag_pres_3,float mag_pres_4,float delta_theta_0,float delta_theta_1,float delta_theta_2,float delta_theta_3,float delta_theta_4,float delta_theta_5,float delta_theta_6,uint16_t ins_status,uint32_t syncln_cnt,uint64_t gps_pps,int8_t utc_year,uint8_t utc_month,uint8_t utc_day,uint8_t utc_hour,uint8_t utc_min,uint8_t utc_sec,uint16_t utc_ms)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VECTOR_NAV_LEN];
@@ -352,26 +358,27 @@ static inline uint16_t mavlink_msg_vector_nav_pack_chan(uint8_t system_id, uint8
 	_mav_put_float(buf, 116, accel_0);
 	_mav_put_float(buf, 120, accel_1);
 	_mav_put_float(buf, 124, accel_2);
-	_mav_put_float(buf, 128, imu_0);
-	_mav_put_float(buf, 132, imu_1);
-	_mav_put_float(buf, 136, imu_2);
-	_mav_put_float(buf, 140, imu_3);
-	_mav_put_float(buf, 144, imu_4);
-	_mav_put_float(buf, 148, imu_5);
-	_mav_put_float(buf, 152, mag_pres_0);
-	_mav_put_float(buf, 156, mag_pres_1);
-	_mav_put_float(buf, 160, mag_pres_2);
-	_mav_put_float(buf, 164, mag_pres_3);
-	_mav_put_float(buf, 168, mag_pres_4);
-	_mav_put_float(buf, 172, delta_theta_0);
-	_mav_put_float(buf, 176, delta_theta_1);
-	_mav_put_float(buf, 180, delta_theta_2);
-	_mav_put_float(buf, 184, delta_theta_3);
-	_mav_put_float(buf, 188, delta_theta_4);
-	_mav_put_float(buf, 192, delta_theta_5);
-	_mav_put_float(buf, 196, delta_theta_6);
-	_mav_put_uint32_t(buf, 200, syncln_cnt);
-	_mav_put_uint16_t(buf, 204, ins_status);
+	_mav_put_float(buf, 128, mag_pres_0);
+	_mav_put_float(buf, 132, mag_pres_1);
+	_mav_put_float(buf, 136, mag_pres_2);
+	_mav_put_float(buf, 140, mag_pres_3);
+	_mav_put_float(buf, 144, mag_pres_4);
+	_mav_put_float(buf, 148, delta_theta_0);
+	_mav_put_float(buf, 152, delta_theta_1);
+	_mav_put_float(buf, 156, delta_theta_2);
+	_mav_put_float(buf, 160, delta_theta_3);
+	_mav_put_float(buf, 164, delta_theta_4);
+	_mav_put_float(buf, 168, delta_theta_5);
+	_mav_put_float(buf, 172, delta_theta_6);
+	_mav_put_uint32_t(buf, 176, syncln_cnt);
+	_mav_put_uint16_t(buf, 180, ins_status);
+	_mav_put_uint16_t(buf, 182, utc_ms);
+	_mav_put_int8_t(buf, 184, utc_year);
+	_mav_put_uint8_t(buf, 185, utc_month);
+	_mav_put_uint8_t(buf, 186, utc_day);
+	_mav_put_uint8_t(buf, 187, utc_hour);
+	_mav_put_uint8_t(buf, 188, utc_min);
+	_mav_put_uint8_t(buf, 189, utc_sec);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_VECTOR_NAV_LEN);
 #else
@@ -400,12 +407,6 @@ static inline uint16_t mavlink_msg_vector_nav_pack_chan(uint8_t system_id, uint8
 	packet.accel_0 = accel_0;
 	packet.accel_1 = accel_1;
 	packet.accel_2 = accel_2;
-	packet.imu_0 = imu_0;
-	packet.imu_1 = imu_1;
-	packet.imu_2 = imu_2;
-	packet.imu_3 = imu_3;
-	packet.imu_4 = imu_4;
-	packet.imu_5 = imu_5;
 	packet.mag_pres_0 = mag_pres_0;
 	packet.mag_pres_1 = mag_pres_1;
 	packet.mag_pres_2 = mag_pres_2;
@@ -420,6 +421,13 @@ static inline uint16_t mavlink_msg_vector_nav_pack_chan(uint8_t system_id, uint8
 	packet.delta_theta_6 = delta_theta_6;
 	packet.syncln_cnt = syncln_cnt;
 	packet.ins_status = ins_status;
+	packet.utc_ms = utc_ms;
+	packet.utc_year = utc_year;
+	packet.utc_month = utc_month;
+	packet.utc_day = utc_day;
+	packet.utc_hour = utc_hour;
+	packet.utc_min = utc_min;
+	packet.utc_sec = utc_sec;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_VECTOR_NAV_LEN);
 #endif
@@ -442,7 +450,7 @@ static inline uint16_t mavlink_msg_vector_nav_pack_chan(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_vector_nav_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_vector_nav_t* vector_nav)
 {
-	return mavlink_msg_vector_nav_pack(system_id, component_id, msg, vector_nav->time_usec, vector_nav->time_startup, vector_nav->time_gps, vector_nav->time_syncln, vector_nav->yaw, vector_nav->pitch, vector_nav->roll, vector_nav->qtn_0, vector_nav->qtn_1, vector_nav->qtn_2, vector_nav->qtn_3, vector_nav->rate_0, vector_nav->rate_1, vector_nav->rate_2, vector_nav->lat, vector_nav->lon, vector_nav->alt, vector_nav->vel_0, vector_nav->vel_1, vector_nav->vel_2, vector_nav->accel_0, vector_nav->accel_1, vector_nav->accel_2, vector_nav->imu_0, vector_nav->imu_1, vector_nav->imu_2, vector_nav->imu_3, vector_nav->imu_4, vector_nav->imu_5, vector_nav->mag_pres_0, vector_nav->mag_pres_1, vector_nav->mag_pres_2, vector_nav->mag_pres_3, vector_nav->mag_pres_4, vector_nav->delta_theta_0, vector_nav->delta_theta_1, vector_nav->delta_theta_2, vector_nav->delta_theta_3, vector_nav->delta_theta_4, vector_nav->delta_theta_5, vector_nav->delta_theta_6, vector_nav->ins_status, vector_nav->syncln_cnt, vector_nav->gps_pps);
+	return mavlink_msg_vector_nav_pack(system_id, component_id, msg, vector_nav->time_usec, vector_nav->time_startup, vector_nav->time_gps, vector_nav->time_syncln, vector_nav->yaw, vector_nav->pitch, vector_nav->roll, vector_nav->qtn_0, vector_nav->qtn_1, vector_nav->qtn_2, vector_nav->qtn_3, vector_nav->rate_0, vector_nav->rate_1, vector_nav->rate_2, vector_nav->lat, vector_nav->lon, vector_nav->alt, vector_nav->vel_0, vector_nav->vel_1, vector_nav->vel_2, vector_nav->accel_0, vector_nav->accel_1, vector_nav->accel_2, vector_nav->mag_pres_0, vector_nav->mag_pres_1, vector_nav->mag_pres_2, vector_nav->mag_pres_3, vector_nav->mag_pres_4, vector_nav->delta_theta_0, vector_nav->delta_theta_1, vector_nav->delta_theta_2, vector_nav->delta_theta_3, vector_nav->delta_theta_4, vector_nav->delta_theta_5, vector_nav->delta_theta_6, vector_nav->ins_status, vector_nav->syncln_cnt, vector_nav->gps_pps, vector_nav->utc_year, vector_nav->utc_month, vector_nav->utc_day, vector_nav->utc_hour, vector_nav->utc_min, vector_nav->utc_sec, vector_nav->utc_ms);
 }
 
 /**
@@ -456,7 +464,7 @@ static inline uint16_t mavlink_msg_vector_nav_encode(uint8_t system_id, uint8_t 
  */
 static inline uint16_t mavlink_msg_vector_nav_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_vector_nav_t* vector_nav)
 {
-	return mavlink_msg_vector_nav_pack_chan(system_id, component_id, chan, msg, vector_nav->time_usec, vector_nav->time_startup, vector_nav->time_gps, vector_nav->time_syncln, vector_nav->yaw, vector_nav->pitch, vector_nav->roll, vector_nav->qtn_0, vector_nav->qtn_1, vector_nav->qtn_2, vector_nav->qtn_3, vector_nav->rate_0, vector_nav->rate_1, vector_nav->rate_2, vector_nav->lat, vector_nav->lon, vector_nav->alt, vector_nav->vel_0, vector_nav->vel_1, vector_nav->vel_2, vector_nav->accel_0, vector_nav->accel_1, vector_nav->accel_2, vector_nav->imu_0, vector_nav->imu_1, vector_nav->imu_2, vector_nav->imu_3, vector_nav->imu_4, vector_nav->imu_5, vector_nav->mag_pres_0, vector_nav->mag_pres_1, vector_nav->mag_pres_2, vector_nav->mag_pres_3, vector_nav->mag_pres_4, vector_nav->delta_theta_0, vector_nav->delta_theta_1, vector_nav->delta_theta_2, vector_nav->delta_theta_3, vector_nav->delta_theta_4, vector_nav->delta_theta_5, vector_nav->delta_theta_6, vector_nav->ins_status, vector_nav->syncln_cnt, vector_nav->gps_pps);
+	return mavlink_msg_vector_nav_pack_chan(system_id, component_id, chan, msg, vector_nav->time_usec, vector_nav->time_startup, vector_nav->time_gps, vector_nav->time_syncln, vector_nav->yaw, vector_nav->pitch, vector_nav->roll, vector_nav->qtn_0, vector_nav->qtn_1, vector_nav->qtn_2, vector_nav->qtn_3, vector_nav->rate_0, vector_nav->rate_1, vector_nav->rate_2, vector_nav->lat, vector_nav->lon, vector_nav->alt, vector_nav->vel_0, vector_nav->vel_1, vector_nav->vel_2, vector_nav->accel_0, vector_nav->accel_1, vector_nav->accel_2, vector_nav->mag_pres_0, vector_nav->mag_pres_1, vector_nav->mag_pres_2, vector_nav->mag_pres_3, vector_nav->mag_pres_4, vector_nav->delta_theta_0, vector_nav->delta_theta_1, vector_nav->delta_theta_2, vector_nav->delta_theta_3, vector_nav->delta_theta_4, vector_nav->delta_theta_5, vector_nav->delta_theta_6, vector_nav->ins_status, vector_nav->syncln_cnt, vector_nav->gps_pps, vector_nav->utc_year, vector_nav->utc_month, vector_nav->utc_day, vector_nav->utc_hour, vector_nav->utc_min, vector_nav->utc_sec, vector_nav->utc_ms);
 }
 
 /**
@@ -486,12 +494,6 @@ static inline uint16_t mavlink_msg_vector_nav_encode_chan(uint8_t system_id, uin
  * @param accel_0 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_1 The estimated acceleration in the body frame, given in m/s^2.
  * @param accel_2 The estimated acceleration in the body frame, given in m/s^2.
- * @param imu_0 IMU angular rate
- * @param imu_1 IMU angular rate
- * @param imu_2 IMU angular rate
- * @param imu_3 IMU acceleration measurement
- * @param imu_4 IMU acceleration measurement
- * @param imu_5 IMU acceleration measurement
  * @param mag_pres_0 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_1 The compensated magnetic, temperature, and pressure measurements from the IMU.
  * @param mag_pres_2 The compensated magnetic, temperature, and pressure measurements from the IMU.
@@ -507,10 +509,17 @@ static inline uint16_t mavlink_msg_vector_nav_encode_chan(uint8_t system_id, uin
  * @param ins_status The INS status bitfield.
  * @param syncln_cnt The number of SyncIn trigger events that have occurred.
  * @param gps_pps The time since the last GPS PPS trigger event expressed in nano seconds.f
+ * @param utc_year The current UTC time. The year is given as a signed byte year offset from the year 2000.
+ * @param utc_month The current UTC time.
+ * @param utc_day The current UTC time.
+ * @param utc_hour The current UTC time.
+ * @param utc_min The current UTC time.
+ * @param utc_sec The current UTC time.
+ * @param utc_ms The current UTC time.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float imu_0, float imu_1, float imu_2, float imu_3, float imu_4, float imu_5, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps)
+static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps, int8_t utc_year, uint8_t utc_month, uint8_t utc_day, uint8_t utc_hour, uint8_t utc_min, uint8_t utc_sec, uint16_t utc_ms)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VECTOR_NAV_LEN];
@@ -538,26 +547,27 @@ static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t 
 	_mav_put_float(buf, 116, accel_0);
 	_mav_put_float(buf, 120, accel_1);
 	_mav_put_float(buf, 124, accel_2);
-	_mav_put_float(buf, 128, imu_0);
-	_mav_put_float(buf, 132, imu_1);
-	_mav_put_float(buf, 136, imu_2);
-	_mav_put_float(buf, 140, imu_3);
-	_mav_put_float(buf, 144, imu_4);
-	_mav_put_float(buf, 148, imu_5);
-	_mav_put_float(buf, 152, mag_pres_0);
-	_mav_put_float(buf, 156, mag_pres_1);
-	_mav_put_float(buf, 160, mag_pres_2);
-	_mav_put_float(buf, 164, mag_pres_3);
-	_mav_put_float(buf, 168, mag_pres_4);
-	_mav_put_float(buf, 172, delta_theta_0);
-	_mav_put_float(buf, 176, delta_theta_1);
-	_mav_put_float(buf, 180, delta_theta_2);
-	_mav_put_float(buf, 184, delta_theta_3);
-	_mav_put_float(buf, 188, delta_theta_4);
-	_mav_put_float(buf, 192, delta_theta_5);
-	_mav_put_float(buf, 196, delta_theta_6);
-	_mav_put_uint32_t(buf, 200, syncln_cnt);
-	_mav_put_uint16_t(buf, 204, ins_status);
+	_mav_put_float(buf, 128, mag_pres_0);
+	_mav_put_float(buf, 132, mag_pres_1);
+	_mav_put_float(buf, 136, mag_pres_2);
+	_mav_put_float(buf, 140, mag_pres_3);
+	_mav_put_float(buf, 144, mag_pres_4);
+	_mav_put_float(buf, 148, delta_theta_0);
+	_mav_put_float(buf, 152, delta_theta_1);
+	_mav_put_float(buf, 156, delta_theta_2);
+	_mav_put_float(buf, 160, delta_theta_3);
+	_mav_put_float(buf, 164, delta_theta_4);
+	_mav_put_float(buf, 168, delta_theta_5);
+	_mav_put_float(buf, 172, delta_theta_6);
+	_mav_put_uint32_t(buf, 176, syncln_cnt);
+	_mav_put_uint16_t(buf, 180, ins_status);
+	_mav_put_uint16_t(buf, 182, utc_ms);
+	_mav_put_int8_t(buf, 184, utc_year);
+	_mav_put_uint8_t(buf, 185, utc_month);
+	_mav_put_uint8_t(buf, 186, utc_day);
+	_mav_put_uint8_t(buf, 187, utc_hour);
+	_mav_put_uint8_t(buf, 188, utc_min);
+	_mav_put_uint8_t(buf, 189, utc_sec);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VECTOR_NAV, buf, MAVLINK_MSG_ID_VECTOR_NAV_LEN, MAVLINK_MSG_ID_VECTOR_NAV_CRC);
@@ -590,12 +600,6 @@ static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t 
 	packet.accel_0 = accel_0;
 	packet.accel_1 = accel_1;
 	packet.accel_2 = accel_2;
-	packet.imu_0 = imu_0;
-	packet.imu_1 = imu_1;
-	packet.imu_2 = imu_2;
-	packet.imu_3 = imu_3;
-	packet.imu_4 = imu_4;
-	packet.imu_5 = imu_5;
 	packet.mag_pres_0 = mag_pres_0;
 	packet.mag_pres_1 = mag_pres_1;
 	packet.mag_pres_2 = mag_pres_2;
@@ -610,6 +614,13 @@ static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t 
 	packet.delta_theta_6 = delta_theta_6;
 	packet.syncln_cnt = syncln_cnt;
 	packet.ins_status = ins_status;
+	packet.utc_ms = utc_ms;
+	packet.utc_year = utc_year;
+	packet.utc_month = utc_month;
+	packet.utc_day = utc_day;
+	packet.utc_hour = utc_hour;
+	packet.utc_min = utc_min;
+	packet.utc_sec = utc_sec;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VECTOR_NAV, (const char *)&packet, MAVLINK_MSG_ID_VECTOR_NAV_LEN, MAVLINK_MSG_ID_VECTOR_NAV_CRC);
@@ -627,7 +638,7 @@ static inline void mavlink_msg_vector_nav_send(mavlink_channel_t chan, uint64_t 
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_vector_nav_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float imu_0, float imu_1, float imu_2, float imu_3, float imu_4, float imu_5, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps)
+static inline void mavlink_msg_vector_nav_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint64_t time_usec, uint64_t time_startup, uint64_t time_gps, uint64_t time_syncln, float yaw, float pitch, float roll, float qtn_0, float qtn_1, float qtn_2, float qtn_3, float rate_0, float rate_1, float rate_2, double lat, double lon, double alt, float vel_0, float vel_1, float vel_2, float accel_0, float accel_1, float accel_2, float mag_pres_0, float mag_pres_1, float mag_pres_2, float mag_pres_3, float mag_pres_4, float delta_theta_0, float delta_theta_1, float delta_theta_2, float delta_theta_3, float delta_theta_4, float delta_theta_5, float delta_theta_6, uint16_t ins_status, uint32_t syncln_cnt, uint64_t gps_pps, int8_t utc_year, uint8_t utc_month, uint8_t utc_day, uint8_t utc_hour, uint8_t utc_min, uint8_t utc_sec, uint16_t utc_ms)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char *buf = (char *)msgbuf;
@@ -655,26 +666,27 @@ static inline void mavlink_msg_vector_nav_send_buf(mavlink_message_t *msgbuf, ma
 	_mav_put_float(buf, 116, accel_0);
 	_mav_put_float(buf, 120, accel_1);
 	_mav_put_float(buf, 124, accel_2);
-	_mav_put_float(buf, 128, imu_0);
-	_mav_put_float(buf, 132, imu_1);
-	_mav_put_float(buf, 136, imu_2);
-	_mav_put_float(buf, 140, imu_3);
-	_mav_put_float(buf, 144, imu_4);
-	_mav_put_float(buf, 148, imu_5);
-	_mav_put_float(buf, 152, mag_pres_0);
-	_mav_put_float(buf, 156, mag_pres_1);
-	_mav_put_float(buf, 160, mag_pres_2);
-	_mav_put_float(buf, 164, mag_pres_3);
-	_mav_put_float(buf, 168, mag_pres_4);
-	_mav_put_float(buf, 172, delta_theta_0);
-	_mav_put_float(buf, 176, delta_theta_1);
-	_mav_put_float(buf, 180, delta_theta_2);
-	_mav_put_float(buf, 184, delta_theta_3);
-	_mav_put_float(buf, 188, delta_theta_4);
-	_mav_put_float(buf, 192, delta_theta_5);
-	_mav_put_float(buf, 196, delta_theta_6);
-	_mav_put_uint32_t(buf, 200, syncln_cnt);
-	_mav_put_uint16_t(buf, 204, ins_status);
+	_mav_put_float(buf, 128, mag_pres_0);
+	_mav_put_float(buf, 132, mag_pres_1);
+	_mav_put_float(buf, 136, mag_pres_2);
+	_mav_put_float(buf, 140, mag_pres_3);
+	_mav_put_float(buf, 144, mag_pres_4);
+	_mav_put_float(buf, 148, delta_theta_0);
+	_mav_put_float(buf, 152, delta_theta_1);
+	_mav_put_float(buf, 156, delta_theta_2);
+	_mav_put_float(buf, 160, delta_theta_3);
+	_mav_put_float(buf, 164, delta_theta_4);
+	_mav_put_float(buf, 168, delta_theta_5);
+	_mav_put_float(buf, 172, delta_theta_6);
+	_mav_put_uint32_t(buf, 176, syncln_cnt);
+	_mav_put_uint16_t(buf, 180, ins_status);
+	_mav_put_uint16_t(buf, 182, utc_ms);
+	_mav_put_int8_t(buf, 184, utc_year);
+	_mav_put_uint8_t(buf, 185, utc_month);
+	_mav_put_uint8_t(buf, 186, utc_day);
+	_mav_put_uint8_t(buf, 187, utc_hour);
+	_mav_put_uint8_t(buf, 188, utc_min);
+	_mav_put_uint8_t(buf, 189, utc_sec);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VECTOR_NAV, buf, MAVLINK_MSG_ID_VECTOR_NAV_LEN, MAVLINK_MSG_ID_VECTOR_NAV_CRC);
@@ -707,12 +719,6 @@ static inline void mavlink_msg_vector_nav_send_buf(mavlink_message_t *msgbuf, ma
 	packet->accel_0 = accel_0;
 	packet->accel_1 = accel_1;
 	packet->accel_2 = accel_2;
-	packet->imu_0 = imu_0;
-	packet->imu_1 = imu_1;
-	packet->imu_2 = imu_2;
-	packet->imu_3 = imu_3;
-	packet->imu_4 = imu_4;
-	packet->imu_5 = imu_5;
 	packet->mag_pres_0 = mag_pres_0;
 	packet->mag_pres_1 = mag_pres_1;
 	packet->mag_pres_2 = mag_pres_2;
@@ -727,6 +733,13 @@ static inline void mavlink_msg_vector_nav_send_buf(mavlink_message_t *msgbuf, ma
 	packet->delta_theta_6 = delta_theta_6;
 	packet->syncln_cnt = syncln_cnt;
 	packet->ins_status = ins_status;
+	packet->utc_ms = utc_ms;
+	packet->utc_year = utc_year;
+	packet->utc_month = utc_month;
+	packet->utc_day = utc_day;
+	packet->utc_hour = utc_hour;
+	packet->utc_min = utc_min;
+	packet->utc_sec = utc_sec;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VECTOR_NAV, (const char *)packet, MAVLINK_MSG_ID_VECTOR_NAV_LEN, MAVLINK_MSG_ID_VECTOR_NAV_CRC);
@@ -973,73 +986,13 @@ static inline float mavlink_msg_vector_nav_get_accel_2(const mavlink_message_t* 
 }
 
 /**
- * @brief Get field imu_0 from vector_nav message
- *
- * @return IMU angular rate
- */
-static inline float mavlink_msg_vector_nav_get_imu_0(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  128);
-}
-
-/**
- * @brief Get field imu_1 from vector_nav message
- *
- * @return IMU angular rate
- */
-static inline float mavlink_msg_vector_nav_get_imu_1(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  132);
-}
-
-/**
- * @brief Get field imu_2 from vector_nav message
- *
- * @return IMU angular rate
- */
-static inline float mavlink_msg_vector_nav_get_imu_2(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  136);
-}
-
-/**
- * @brief Get field imu_3 from vector_nav message
- *
- * @return IMU acceleration measurement
- */
-static inline float mavlink_msg_vector_nav_get_imu_3(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  140);
-}
-
-/**
- * @brief Get field imu_4 from vector_nav message
- *
- * @return IMU acceleration measurement
- */
-static inline float mavlink_msg_vector_nav_get_imu_4(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  144);
-}
-
-/**
- * @brief Get field imu_5 from vector_nav message
- *
- * @return IMU acceleration measurement
- */
-static inline float mavlink_msg_vector_nav_get_imu_5(const mavlink_message_t* msg)
-{
-	return _MAV_RETURN_float(msg,  148);
-}
-
-/**
  * @brief Get field mag_pres_0 from vector_nav message
  *
  * @return The compensated magnetic, temperature, and pressure measurements from the IMU.
  */
 static inline float mavlink_msg_vector_nav_get_mag_pres_0(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  152);
+	return _MAV_RETURN_float(msg,  128);
 }
 
 /**
@@ -1049,7 +1002,7 @@ static inline float mavlink_msg_vector_nav_get_mag_pres_0(const mavlink_message_
  */
 static inline float mavlink_msg_vector_nav_get_mag_pres_1(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  156);
+	return _MAV_RETURN_float(msg,  132);
 }
 
 /**
@@ -1059,7 +1012,7 @@ static inline float mavlink_msg_vector_nav_get_mag_pres_1(const mavlink_message_
  */
 static inline float mavlink_msg_vector_nav_get_mag_pres_2(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  160);
+	return _MAV_RETURN_float(msg,  136);
 }
 
 /**
@@ -1069,7 +1022,7 @@ static inline float mavlink_msg_vector_nav_get_mag_pres_2(const mavlink_message_
  */
 static inline float mavlink_msg_vector_nav_get_mag_pres_3(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  164);
+	return _MAV_RETURN_float(msg,  140);
 }
 
 /**
@@ -1079,7 +1032,7 @@ static inline float mavlink_msg_vector_nav_get_mag_pres_3(const mavlink_message_
  */
 static inline float mavlink_msg_vector_nav_get_mag_pres_4(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  168);
+	return _MAV_RETURN_float(msg,  144);
 }
 
 /**
@@ -1089,7 +1042,7 @@ static inline float mavlink_msg_vector_nav_get_mag_pres_4(const mavlink_message_
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_0(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  172);
+	return _MAV_RETURN_float(msg,  148);
 }
 
 /**
@@ -1099,7 +1052,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_0(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_1(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  176);
+	return _MAV_RETURN_float(msg,  152);
 }
 
 /**
@@ -1109,7 +1062,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_1(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_2(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  180);
+	return _MAV_RETURN_float(msg,  156);
 }
 
 /**
@@ -1119,7 +1072,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_2(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_3(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  184);
+	return _MAV_RETURN_float(msg,  160);
 }
 
 /**
@@ -1129,7 +1082,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_3(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_4(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  188);
+	return _MAV_RETURN_float(msg,  164);
 }
 
 /**
@@ -1139,7 +1092,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_4(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_5(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  192);
+	return _MAV_RETURN_float(msg,  168);
 }
 
 /**
@@ -1149,7 +1102,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_5(const mavlink_messa
  */
 static inline float mavlink_msg_vector_nav_get_delta_theta_6(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_float(msg,  196);
+	return _MAV_RETURN_float(msg,  172);
 }
 
 /**
@@ -1159,7 +1112,7 @@ static inline float mavlink_msg_vector_nav_get_delta_theta_6(const mavlink_messa
  */
 static inline uint16_t mavlink_msg_vector_nav_get_ins_status(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_uint16_t(msg,  204);
+	return _MAV_RETURN_uint16_t(msg,  180);
 }
 
 /**
@@ -1169,7 +1122,7 @@ static inline uint16_t mavlink_msg_vector_nav_get_ins_status(const mavlink_messa
  */
 static inline uint32_t mavlink_msg_vector_nav_get_syncln_cnt(const mavlink_message_t* msg)
 {
-	return _MAV_RETURN_uint32_t(msg,  200);
+	return _MAV_RETURN_uint32_t(msg,  176);
 }
 
 /**
@@ -1180,6 +1133,76 @@ static inline uint32_t mavlink_msg_vector_nav_get_syncln_cnt(const mavlink_messa
 static inline uint64_t mavlink_msg_vector_nav_get_gps_pps(const mavlink_message_t* msg)
 {
 	return _MAV_RETURN_uint64_t(msg,  56);
+}
+
+/**
+ * @brief Get field utc_year from vector_nav message
+ *
+ * @return The current UTC time. The year is given as a signed byte year offset from the year 2000.
+ */
+static inline int8_t mavlink_msg_vector_nav_get_utc_year(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int8_t(msg,  184);
+}
+
+/**
+ * @brief Get field utc_month from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint8_t mavlink_msg_vector_nav_get_utc_month(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint8_t(msg,  185);
+}
+
+/**
+ * @brief Get field utc_day from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint8_t mavlink_msg_vector_nav_get_utc_day(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint8_t(msg,  186);
+}
+
+/**
+ * @brief Get field utc_hour from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint8_t mavlink_msg_vector_nav_get_utc_hour(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint8_t(msg,  187);
+}
+
+/**
+ * @brief Get field utc_min from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint8_t mavlink_msg_vector_nav_get_utc_min(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint8_t(msg,  188);
+}
+
+/**
+ * @brief Get field utc_sec from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint8_t mavlink_msg_vector_nav_get_utc_sec(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint8_t(msg,  189);
+}
+
+/**
+ * @brief Get field utc_ms from vector_nav message
+ *
+ * @return The current UTC time.
+ */
+static inline uint16_t mavlink_msg_vector_nav_get_utc_ms(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_uint16_t(msg,  182);
 }
 
 /**
@@ -1215,12 +1238,6 @@ static inline void mavlink_msg_vector_nav_decode(const mavlink_message_t* msg, m
 	vector_nav->accel_0 = mavlink_msg_vector_nav_get_accel_0(msg);
 	vector_nav->accel_1 = mavlink_msg_vector_nav_get_accel_1(msg);
 	vector_nav->accel_2 = mavlink_msg_vector_nav_get_accel_2(msg);
-	vector_nav->imu_0 = mavlink_msg_vector_nav_get_imu_0(msg);
-	vector_nav->imu_1 = mavlink_msg_vector_nav_get_imu_1(msg);
-	vector_nav->imu_2 = mavlink_msg_vector_nav_get_imu_2(msg);
-	vector_nav->imu_3 = mavlink_msg_vector_nav_get_imu_3(msg);
-	vector_nav->imu_4 = mavlink_msg_vector_nav_get_imu_4(msg);
-	vector_nav->imu_5 = mavlink_msg_vector_nav_get_imu_5(msg);
 	vector_nav->mag_pres_0 = mavlink_msg_vector_nav_get_mag_pres_0(msg);
 	vector_nav->mag_pres_1 = mavlink_msg_vector_nav_get_mag_pres_1(msg);
 	vector_nav->mag_pres_2 = mavlink_msg_vector_nav_get_mag_pres_2(msg);
@@ -1235,6 +1252,13 @@ static inline void mavlink_msg_vector_nav_decode(const mavlink_message_t* msg, m
 	vector_nav->delta_theta_6 = mavlink_msg_vector_nav_get_delta_theta_6(msg);
 	vector_nav->syncln_cnt = mavlink_msg_vector_nav_get_syncln_cnt(msg);
 	vector_nav->ins_status = mavlink_msg_vector_nav_get_ins_status(msg);
+	vector_nav->utc_ms = mavlink_msg_vector_nav_get_utc_ms(msg);
+	vector_nav->utc_year = mavlink_msg_vector_nav_get_utc_year(msg);
+	vector_nav->utc_month = mavlink_msg_vector_nav_get_utc_month(msg);
+	vector_nav->utc_day = mavlink_msg_vector_nav_get_utc_day(msg);
+	vector_nav->utc_hour = mavlink_msg_vector_nav_get_utc_hour(msg);
+	vector_nav->utc_min = mavlink_msg_vector_nav_get_utc_min(msg);
+	vector_nav->utc_sec = mavlink_msg_vector_nav_get_utc_sec(msg);
 #else
 	memcpy(vector_nav, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_VECTOR_NAV_LEN);
 #endif

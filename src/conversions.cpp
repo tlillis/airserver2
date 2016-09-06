@@ -1,6 +1,6 @@
 // This file was created using AirServer tool "con_gen.py"
 // Generated cpp code for converting mavlink to json
-// This code was generated on 10/08/2016 at 04:43:02
+// This code was generated on 19/08/2016 at 10:22:09
 
 #include "../include/conversions.h"
 #include <string>
@@ -9,14 +9,6 @@
 #include "../include/messages.h"
 
 #include "../include/jsmn.h"
-
-static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
-		return 0;
-	}
-	return -1;
-}
 
 int mav_to_json(Message &message) {
 
@@ -31,7 +23,7 @@ int mav_to_json(Message &message) {
             // msgid = 0
             mavlink_heartbeat_t heartbeat;
             mavlink_msg_heartbeat_decode(&message.mavlink, &(heartbeat));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HEARTBEAT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(heartbeat.type)
@@ -48,7 +40,7 @@ int mav_to_json(Message &message) {
             // msgid = 1
             mavlink_sys_status_t sys_status;
             mavlink_msg_sys_status_decode(&message.mavlink, &(sys_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SYS_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"onboard_control_sensors_present\":\"" << sys_status.onboard_control_sensors_present
@@ -73,7 +65,7 @@ int mav_to_json(Message &message) {
             // msgid = 2
             mavlink_system_time_t system_time;
             mavlink_msg_system_time_decode(&message.mavlink, &(system_time));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SYSTEM_TIME"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_unix_usec\":\"" << system_time.time_unix_usec
@@ -87,7 +79,7 @@ int mav_to_json(Message &message) {
             // msgid = 4
             mavlink_ping_t ping;
             mavlink_msg_ping_decode(&message.mavlink, &(ping));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PING"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << ping.time_usec
@@ -103,7 +95,7 @@ int mav_to_json(Message &message) {
             // msgid = 5
             mavlink_change_operator_control_t change_operator_control;
             mavlink_msg_change_operator_control_decode(&message.mavlink, &(change_operator_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"CHANGE_OPERATOR_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(change_operator_control.target_system)
@@ -119,7 +111,7 @@ int mav_to_json(Message &message) {
             // msgid = 6
             mavlink_change_operator_control_ack_t change_operator_control_ack;
             mavlink_msg_change_operator_control_ack_decode(&message.mavlink, &(change_operator_control_ack));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"CHANGE_OPERATOR_CONTROL_ACK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"gcs_system_id\":\"" << unsigned(change_operator_control_ack.gcs_system_id)
@@ -134,7 +126,7 @@ int mav_to_json(Message &message) {
             // msgid = 7
             mavlink_auth_key_t auth_key;
             mavlink_msg_auth_key_decode(&message.mavlink, &(auth_key));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AUTH_KEY"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"key\":\"" << auth_key.key
@@ -147,7 +139,7 @@ int mav_to_json(Message &message) {
             // msgid = 11
             mavlink_set_mode_t set_mode;
             mavlink_msg_set_mode_decode(&message.mavlink, &(set_mode));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_MODE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(set_mode.target_system)
@@ -162,7 +154,7 @@ int mav_to_json(Message &message) {
             // msgid = 20
             mavlink_param_request_read_t param_request_read;
             mavlink_msg_param_request_read_decode(&message.mavlink, &(param_request_read));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PARAM_REQUEST_READ"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(param_request_read.target_system)
@@ -178,7 +170,7 @@ int mav_to_json(Message &message) {
             // msgid = 21
             mavlink_param_request_list_t param_request_list;
             mavlink_msg_param_request_list_decode(&message.mavlink, &(param_request_list));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PARAM_REQUEST_LIST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(param_request_list.target_system)
@@ -192,7 +184,7 @@ int mav_to_json(Message &message) {
             // msgid = 22
             mavlink_param_value_t param_value;
             mavlink_msg_param_value_decode(&message.mavlink, &(param_value));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PARAM_VALUE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"param_id\":\"" << param_value.param_id
@@ -209,7 +201,7 @@ int mav_to_json(Message &message) {
             // msgid = 23
             mavlink_param_set_t param_set;
             mavlink_msg_param_set_decode(&message.mavlink, &(param_set));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PARAM_SET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(param_set.target_system)
@@ -226,7 +218,7 @@ int mav_to_json(Message &message) {
             // msgid = 24
             mavlink_gps_raw_int_t gps_raw_int;
             mavlink_msg_gps_raw_int_decode(&message.mavlink, &(gps_raw_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS_RAW_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << gps_raw_int.time_usec
@@ -248,7 +240,7 @@ int mav_to_json(Message &message) {
             // msgid = 25
             mavlink_gps_status_t gps_status;
             mavlink_msg_gps_status_decode(&message.mavlink, &(gps_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"satellites_visible\":\"" << unsigned(gps_status.satellites_visible)
@@ -266,7 +258,7 @@ int mav_to_json(Message &message) {
             // msgid = 26
             mavlink_scaled_imu_t scaled_imu;
             mavlink_msg_scaled_imu_decode(&message.mavlink, &(scaled_imu));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SCALED_IMU"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << scaled_imu.time_boot_ms
@@ -288,7 +280,7 @@ int mav_to_json(Message &message) {
             // msgid = 27
             mavlink_raw_imu_t raw_imu;
             mavlink_msg_raw_imu_decode(&message.mavlink, &(raw_imu));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RAW_IMU"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << raw_imu.time_usec
@@ -310,7 +302,7 @@ int mav_to_json(Message &message) {
             // msgid = 28
             mavlink_raw_pressure_t raw_pressure;
             mavlink_msg_raw_pressure_decode(&message.mavlink, &(raw_pressure));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RAW_PRESSURE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << raw_pressure.time_usec
@@ -327,7 +319,7 @@ int mav_to_json(Message &message) {
             // msgid = 29
             mavlink_scaled_pressure_t scaled_pressure;
             mavlink_msg_scaled_pressure_decode(&message.mavlink, &(scaled_pressure));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SCALED_PRESSURE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << scaled_pressure.time_boot_ms
@@ -343,7 +335,7 @@ int mav_to_json(Message &message) {
             // msgid = 30
             mavlink_attitude_t attitude;
             mavlink_msg_attitude_decode(&message.mavlink, &(attitude));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ATTITUDE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << attitude.time_boot_ms
@@ -362,7 +354,7 @@ int mav_to_json(Message &message) {
             // msgid = 31
             mavlink_attitude_quaternion_t attitude_quaternion;
             mavlink_msg_attitude_quaternion_decode(&message.mavlink, &(attitude_quaternion));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ATTITUDE_QUATERNION"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << attitude_quaternion.time_boot_ms
@@ -382,7 +374,7 @@ int mav_to_json(Message &message) {
             // msgid = 32
             mavlink_local_position_ned_t local_position_ned;
             mavlink_msg_local_position_ned_decode(&message.mavlink, &(local_position_ned));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOCAL_POSITION_NED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << local_position_ned.time_boot_ms
@@ -401,7 +393,7 @@ int mav_to_json(Message &message) {
             // msgid = 33
             mavlink_global_position_int_t global_position_int;
             mavlink_msg_global_position_int_decode(&message.mavlink, &(global_position_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GLOBAL_POSITION_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << global_position_int.time_boot_ms
@@ -422,7 +414,7 @@ int mav_to_json(Message &message) {
             // msgid = 34
             mavlink_rc_channels_scaled_t rc_channels_scaled;
             mavlink_msg_rc_channels_scaled_decode(&message.mavlink, &(rc_channels_scaled));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RC_CHANNELS_SCALED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << rc_channels_scaled.time_boot_ms
@@ -445,7 +437,7 @@ int mav_to_json(Message &message) {
             // msgid = 35
             mavlink_rc_channels_raw_t rc_channels_raw;
             mavlink_msg_rc_channels_raw_decode(&message.mavlink, &(rc_channels_raw));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RC_CHANNELS_RAW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << rc_channels_raw.time_boot_ms
@@ -468,7 +460,7 @@ int mav_to_json(Message &message) {
             // msgid = 36
             mavlink_servo_output_raw_t servo_output_raw;
             mavlink_msg_servo_output_raw_decode(&message.mavlink, &(servo_output_raw));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SERVO_OUTPUT_RAW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << servo_output_raw.time_usec
@@ -490,7 +482,7 @@ int mav_to_json(Message &message) {
             // msgid = 37
             mavlink_mission_request_partial_list_t mission_request_partial_list;
             mavlink_msg_mission_request_partial_list_decode(&message.mavlink, &(mission_request_partial_list));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_REQUEST_PARTIAL_LIST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_request_partial_list.target_system)
@@ -506,7 +498,7 @@ int mav_to_json(Message &message) {
             // msgid = 38
             mavlink_mission_write_partial_list_t mission_write_partial_list;
             mavlink_msg_mission_write_partial_list_decode(&message.mavlink, &(mission_write_partial_list));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_WRITE_PARTIAL_LIST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_write_partial_list.target_system)
@@ -522,7 +514,7 @@ int mav_to_json(Message &message) {
             // msgid = 39
             mavlink_mission_item_t mission_item;
             mavlink_msg_mission_item_decode(&message.mavlink, &(mission_item));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_ITEM"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_item.target_system)
@@ -548,7 +540,7 @@ int mav_to_json(Message &message) {
             // msgid = 40
             mavlink_mission_request_t mission_request;
             mavlink_msg_mission_request_decode(&message.mavlink, &(mission_request));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_REQUEST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_request.target_system)
@@ -563,7 +555,7 @@ int mav_to_json(Message &message) {
             // msgid = 41
             mavlink_mission_set_current_t mission_set_current;
             mavlink_msg_mission_set_current_decode(&message.mavlink, &(mission_set_current));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_SET_CURRENT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_set_current.target_system)
@@ -578,7 +570,7 @@ int mav_to_json(Message &message) {
             // msgid = 42
             mavlink_mission_current_t mission_current;
             mavlink_msg_mission_current_decode(&message.mavlink, &(mission_current));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_CURRENT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"seq\":\"" << mission_current.seq
@@ -591,7 +583,7 @@ int mav_to_json(Message &message) {
             // msgid = 43
             mavlink_mission_request_list_t mission_request_list;
             mavlink_msg_mission_request_list_decode(&message.mavlink, &(mission_request_list));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_REQUEST_LIST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_request_list.target_system)
@@ -605,7 +597,7 @@ int mav_to_json(Message &message) {
             // msgid = 44
             mavlink_mission_count_t mission_count;
             mavlink_msg_mission_count_decode(&message.mavlink, &(mission_count));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_COUNT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_count.target_system)
@@ -620,7 +612,7 @@ int mav_to_json(Message &message) {
             // msgid = 45
             mavlink_mission_clear_all_t mission_clear_all;
             mavlink_msg_mission_clear_all_decode(&message.mavlink, &(mission_clear_all));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_CLEAR_ALL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_clear_all.target_system)
@@ -634,7 +626,7 @@ int mav_to_json(Message &message) {
             // msgid = 46
             mavlink_mission_item_reached_t mission_item_reached;
             mavlink_msg_mission_item_reached_decode(&message.mavlink, &(mission_item_reached));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_ITEM_REACHED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"seq\":\"" << mission_item_reached.seq
@@ -647,7 +639,7 @@ int mav_to_json(Message &message) {
             // msgid = 47
             mavlink_mission_ack_t mission_ack;
             mavlink_msg_mission_ack_decode(&message.mavlink, &(mission_ack));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_ACK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_ack.target_system)
@@ -662,7 +654,7 @@ int mav_to_json(Message &message) {
             // msgid = 48
             mavlink_set_gps_global_origin_t set_gps_global_origin;
             mavlink_msg_set_gps_global_origin_decode(&message.mavlink, &(set_gps_global_origin));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_GPS_GLOBAL_ORIGIN"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(set_gps_global_origin.target_system)
@@ -678,7 +670,7 @@ int mav_to_json(Message &message) {
             // msgid = 49
             mavlink_gps_global_origin_t gps_global_origin;
             mavlink_msg_gps_global_origin_decode(&message.mavlink, &(gps_global_origin));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS_GLOBAL_ORIGIN"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"latitude\":\"" << gps_global_origin.latitude
@@ -693,7 +685,7 @@ int mav_to_json(Message &message) {
             // msgid = 50
             mavlink_param_map_rc_t param_map_rc;
             mavlink_msg_param_map_rc_decode(&message.mavlink, &(param_map_rc));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PARAM_MAP_RC"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(param_map_rc.target_system)
@@ -714,7 +706,7 @@ int mav_to_json(Message &message) {
             // msgid = 54
             mavlink_safety_set_allowed_area_t safety_set_allowed_area;
             mavlink_msg_safety_set_allowed_area_decode(&message.mavlink, &(safety_set_allowed_area));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SAFETY_SET_ALLOWED_AREA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(safety_set_allowed_area.target_system)
@@ -735,7 +727,7 @@ int mav_to_json(Message &message) {
             // msgid = 55
             mavlink_safety_allowed_area_t safety_allowed_area;
             mavlink_msg_safety_allowed_area_decode(&message.mavlink, &(safety_allowed_area));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SAFETY_ALLOWED_AREA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"frame\":\"" << unsigned(safety_allowed_area.frame)
@@ -754,7 +746,7 @@ int mav_to_json(Message &message) {
             // msgid = 61
             mavlink_attitude_quaternion_cov_t attitude_quaternion_cov;
             mavlink_msg_attitude_quaternion_cov_decode(&message.mavlink, &(attitude_quaternion_cov));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ATTITUDE_QUATERNION_COV"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << attitude_quaternion_cov.time_boot_ms
@@ -772,7 +764,7 @@ int mav_to_json(Message &message) {
             // msgid = 62
             mavlink_nav_controller_output_t nav_controller_output;
             mavlink_msg_nav_controller_output_decode(&message.mavlink, &(nav_controller_output));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"NAV_CONTROLLER_OUTPUT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"nav_roll\":\"" << nav_controller_output.nav_roll
@@ -792,7 +784,7 @@ int mav_to_json(Message &message) {
             // msgid = 63
             mavlink_global_position_int_cov_t global_position_int_cov;
             mavlink_msg_global_position_int_cov_decode(&message.mavlink, &(global_position_int_cov));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GLOBAL_POSITION_INT_COV"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << global_position_int_cov.time_boot_ms
@@ -815,7 +807,7 @@ int mav_to_json(Message &message) {
             // msgid = 64
             mavlink_local_position_ned_cov_t local_position_ned_cov;
             mavlink_msg_local_position_ned_cov_decode(&message.mavlink, &(local_position_ned_cov));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOCAL_POSITION_NED_COV"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << local_position_ned_cov.time_boot_ms
@@ -837,7 +829,7 @@ int mav_to_json(Message &message) {
             // msgid = 65
             mavlink_rc_channels_t rc_channels;
             mavlink_msg_rc_channels_decode(&message.mavlink, &(rc_channels));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RC_CHANNELS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << rc_channels.time_boot_ms
@@ -870,7 +862,7 @@ int mav_to_json(Message &message) {
             // msgid = 66
             mavlink_request_data_stream_t request_data_stream;
             mavlink_msg_request_data_stream_decode(&message.mavlink, &(request_data_stream));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"REQUEST_DATA_STREAM"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(request_data_stream.target_system)
@@ -887,7 +879,7 @@ int mav_to_json(Message &message) {
             // msgid = 67
             mavlink_data_stream_t data_stream;
             mavlink_msg_data_stream_decode(&message.mavlink, &(data_stream));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA_STREAM"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"stream_id\":\"" << unsigned(data_stream.stream_id)
@@ -902,7 +894,7 @@ int mav_to_json(Message &message) {
             // msgid = 69
             mavlink_manual_control_t manual_control;
             mavlink_msg_manual_control_decode(&message.mavlink, &(manual_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MANUAL_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target\":\"" << unsigned(manual_control.target)
@@ -920,7 +912,7 @@ int mav_to_json(Message &message) {
             // msgid = 70
             mavlink_rc_channels_override_t rc_channels_override;
             mavlink_msg_rc_channels_override_decode(&message.mavlink, &(rc_channels_override));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RC_CHANNELS_OVERRIDE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(rc_channels_override.target_system)
@@ -942,7 +934,7 @@ int mav_to_json(Message &message) {
             // msgid = 73
             mavlink_mission_item_int_t mission_item_int;
             mavlink_msg_mission_item_int_decode(&message.mavlink, &(mission_item_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MISSION_ITEM_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mission_item_int.target_system)
@@ -968,7 +960,7 @@ int mav_to_json(Message &message) {
             // msgid = 74
             mavlink_vfr_hud_t vfr_hud;
             mavlink_msg_vfr_hud_decode(&message.mavlink, &(vfr_hud));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"VFR_HUD"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"airspeed\":\"" << vfr_hud.airspeed
@@ -986,7 +978,7 @@ int mav_to_json(Message &message) {
             // msgid = 75
             mavlink_command_int_t command_int;
             mavlink_msg_command_int_decode(&message.mavlink, &(command_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"COMMAND_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(command_int.target_system)
@@ -1011,7 +1003,7 @@ int mav_to_json(Message &message) {
             // msgid = 76
             mavlink_command_long_t command_long;
             mavlink_msg_command_long_decode(&message.mavlink, &(command_long));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"COMMAND_LONG"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(command_long.target_system)
@@ -1034,7 +1026,7 @@ int mav_to_json(Message &message) {
             // msgid = 77
             mavlink_command_ack_t command_ack;
             mavlink_msg_command_ack_decode(&message.mavlink, &(command_ack));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"COMMAND_ACK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"command\":\"" << command_ack.command
@@ -1048,7 +1040,7 @@ int mav_to_json(Message &message) {
             // msgid = 81
             mavlink_manual_setpoint_t manual_setpoint;
             mavlink_msg_manual_setpoint_decode(&message.mavlink, &(manual_setpoint));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MANUAL_SETPOINT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << manual_setpoint.time_boot_ms
@@ -1067,7 +1059,7 @@ int mav_to_json(Message &message) {
             // msgid = 82
             mavlink_set_attitude_target_t set_attitude_target;
             mavlink_msg_set_attitude_target_decode(&message.mavlink, &(set_attitude_target));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_ATTITUDE_TARGET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << set_attitude_target.time_boot_ms
@@ -1088,7 +1080,7 @@ int mav_to_json(Message &message) {
             // msgid = 83
             mavlink_attitude_target_t attitude_target;
             mavlink_msg_attitude_target_decode(&message.mavlink, &(attitude_target));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ATTITUDE_TARGET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << attitude_target.time_boot_ms
@@ -1107,7 +1099,7 @@ int mav_to_json(Message &message) {
             // msgid = 84
             mavlink_set_position_target_local_ned_t set_position_target_local_ned;
             mavlink_msg_set_position_target_local_ned_decode(&message.mavlink, &(set_position_target_local_ned));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_POSITION_TARGET_LOCAL_NED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << set_position_target_local_ned.time_boot_ms
@@ -1135,7 +1127,7 @@ int mav_to_json(Message &message) {
             // msgid = 85
             mavlink_position_target_local_ned_t position_target_local_ned;
             mavlink_msg_position_target_local_ned_decode(&message.mavlink, &(position_target_local_ned));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"POSITION_TARGET_LOCAL_NED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << position_target_local_ned.time_boot_ms
@@ -1161,7 +1153,7 @@ int mav_to_json(Message &message) {
             // msgid = 86
             mavlink_set_position_target_global_int_t set_position_target_global_int;
             mavlink_msg_set_position_target_global_int_decode(&message.mavlink, &(set_position_target_global_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_POSITION_TARGET_GLOBAL_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << set_position_target_global_int.time_boot_ms
@@ -1189,7 +1181,7 @@ int mav_to_json(Message &message) {
             // msgid = 87
             mavlink_position_target_global_int_t position_target_global_int;
             mavlink_msg_position_target_global_int_decode(&message.mavlink, &(position_target_global_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"POSITION_TARGET_GLOBAL_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << position_target_global_int.time_boot_ms
@@ -1215,7 +1207,7 @@ int mav_to_json(Message &message) {
             // msgid = 89
             mavlink_local_position_ned_system_global_offset_t local_position_ned_system_global_offset;
             mavlink_msg_local_position_ned_system_global_offset_decode(&message.mavlink, &(local_position_ned_system_global_offset));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOCAL_POSITION_NED_SYSTEM_GLOBAL_OFFSET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << local_position_ned_system_global_offset.time_boot_ms
@@ -1234,7 +1226,7 @@ int mav_to_json(Message &message) {
             // msgid = 90
             mavlink_hil_state_t hil_state;
             mavlink_msg_hil_state_decode(&message.mavlink, &(hil_state));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_STATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_state.time_usec
@@ -1262,7 +1254,7 @@ int mav_to_json(Message &message) {
             // msgid = 91
             mavlink_hil_controls_t hil_controls;
             mavlink_msg_hil_controls_decode(&message.mavlink, &(hil_controls));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_CONTROLS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_controls.time_usec
@@ -1285,7 +1277,7 @@ int mav_to_json(Message &message) {
             // msgid = 92
             mavlink_hil_rc_inputs_raw_t hil_rc_inputs_raw;
             mavlink_msg_hil_rc_inputs_raw_decode(&message.mavlink, &(hil_rc_inputs_raw));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_RC_INPUTS_RAW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_rc_inputs_raw.time_usec
@@ -1311,7 +1303,7 @@ int mav_to_json(Message &message) {
             // msgid = 100
             mavlink_optical_flow_t optical_flow;
             mavlink_msg_optical_flow_decode(&message.mavlink, &(optical_flow));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"OPTICAL_FLOW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << optical_flow.time_usec
@@ -1331,7 +1323,7 @@ int mav_to_json(Message &message) {
             // msgid = 101
             mavlink_global_vision_position_estimate_t global_vision_position_estimate;
             mavlink_msg_global_vision_position_estimate_decode(&message.mavlink, &(global_vision_position_estimate));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GLOBAL_VISION_POSITION_ESTIMATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"usec\":\"" << global_vision_position_estimate.usec
@@ -1350,7 +1342,7 @@ int mav_to_json(Message &message) {
             // msgid = 102
             mavlink_vision_position_estimate_t vision_position_estimate;
             mavlink_msg_vision_position_estimate_decode(&message.mavlink, &(vision_position_estimate));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"VISION_POSITION_ESTIMATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"usec\":\"" << vision_position_estimate.usec
@@ -1369,7 +1361,7 @@ int mav_to_json(Message &message) {
             // msgid = 103
             mavlink_vision_speed_estimate_t vision_speed_estimate;
             mavlink_msg_vision_speed_estimate_decode(&message.mavlink, &(vision_speed_estimate));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"VISION_SPEED_ESTIMATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"usec\":\"" << vision_speed_estimate.usec
@@ -1385,7 +1377,7 @@ int mav_to_json(Message &message) {
             // msgid = 104
             mavlink_vicon_position_estimate_t vicon_position_estimate;
             mavlink_msg_vicon_position_estimate_decode(&message.mavlink, &(vicon_position_estimate));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"VICON_POSITION_ESTIMATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"usec\":\"" << vicon_position_estimate.usec
@@ -1404,7 +1396,7 @@ int mav_to_json(Message &message) {
             // msgid = 105
             mavlink_highres_imu_t highres_imu;
             mavlink_msg_highres_imu_decode(&message.mavlink, &(highres_imu));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIGHRES_IMU"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << highres_imu.time_usec
@@ -1431,7 +1423,7 @@ int mav_to_json(Message &message) {
             // msgid = 106
             mavlink_optical_flow_rad_t optical_flow_rad;
             mavlink_msg_optical_flow_rad_decode(&message.mavlink, &(optical_flow_rad));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"OPTICAL_FLOW_RAD"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << optical_flow_rad.time_usec
@@ -1455,7 +1447,7 @@ int mav_to_json(Message &message) {
             // msgid = 107
             mavlink_hil_sensor_t hil_sensor;
             mavlink_msg_hil_sensor_decode(&message.mavlink, &(hil_sensor));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_SENSOR"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_sensor.time_usec
@@ -1482,7 +1474,7 @@ int mav_to_json(Message &message) {
             // msgid = 108
             mavlink_sim_state_t sim_state;
             mavlink_msg_sim_state_decode(&message.mavlink, &(sim_state));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SIM_STATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"q1\":\"" << sim_state.q1
@@ -1515,7 +1507,7 @@ int mav_to_json(Message &message) {
             // msgid = 109
             mavlink_radio_status_t radio_status;
             mavlink_msg_radio_status_decode(&message.mavlink, &(radio_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RADIO_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"rssi\":\"" << unsigned(radio_status.rssi)
@@ -1534,7 +1526,7 @@ int mav_to_json(Message &message) {
             // msgid = 110
             mavlink_file_transfer_protocol_t file_transfer_protocol;
             mavlink_msg_file_transfer_protocol_decode(&message.mavlink, &(file_transfer_protocol));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"FILE_TRANSFER_PROTOCOL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_network\":\"" << unsigned(file_transfer_protocol.target_network)
@@ -1550,7 +1542,7 @@ int mav_to_json(Message &message) {
             // msgid = 111
             mavlink_timesync_t timesync;
             mavlink_msg_timesync_decode(&message.mavlink, &(timesync));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"TIMESYNC"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"tc1\":\"" << timesync.tc1
@@ -1564,7 +1556,7 @@ int mav_to_json(Message &message) {
             // msgid = 113
             mavlink_hil_gps_t hil_gps;
             mavlink_msg_hil_gps_decode(&message.mavlink, &(hil_gps));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_GPS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_gps.time_usec
@@ -1589,7 +1581,7 @@ int mav_to_json(Message &message) {
             // msgid = 114
             mavlink_hil_optical_flow_t hil_optical_flow;
             mavlink_msg_hil_optical_flow_decode(&message.mavlink, &(hil_optical_flow));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_OPTICAL_FLOW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_optical_flow.time_usec
@@ -1613,7 +1605,7 @@ int mav_to_json(Message &message) {
             // msgid = 115
             mavlink_hil_state_quaternion_t hil_state_quaternion;
             mavlink_msg_hil_state_quaternion_decode(&message.mavlink, &(hil_state_quaternion));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HIL_STATE_QUATERNION"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << hil_state_quaternion.time_usec
@@ -1641,7 +1633,7 @@ int mav_to_json(Message &message) {
             // msgid = 116
             mavlink_scaled_imu2_t scaled_imu2;
             mavlink_msg_scaled_imu2_decode(&message.mavlink, &(scaled_imu2));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SCALED_IMU2"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << scaled_imu2.time_boot_ms
@@ -1663,7 +1655,7 @@ int mav_to_json(Message &message) {
             // msgid = 117
             mavlink_log_request_list_t log_request_list;
             mavlink_msg_log_request_list_decode(&message.mavlink, &(log_request_list));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_REQUEST_LIST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(log_request_list.target_system)
@@ -1679,7 +1671,7 @@ int mav_to_json(Message &message) {
             // msgid = 118
             mavlink_log_entry_t log_entry;
             mavlink_msg_log_entry_decode(&message.mavlink, &(log_entry));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_ENTRY"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"id\":\"" << log_entry.id
@@ -1696,7 +1688,7 @@ int mav_to_json(Message &message) {
             // msgid = 119
             mavlink_log_request_data_t log_request_data;
             mavlink_msg_log_request_data_decode(&message.mavlink, &(log_request_data));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_REQUEST_DATA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(log_request_data.target_system)
@@ -1713,7 +1705,7 @@ int mav_to_json(Message &message) {
             // msgid = 120
             mavlink_log_data_t log_data;
             mavlink_msg_log_data_decode(&message.mavlink, &(log_data));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_DATA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"id\":\"" << log_data.id
@@ -1729,7 +1721,7 @@ int mav_to_json(Message &message) {
             // msgid = 121
             mavlink_log_erase_t log_erase;
             mavlink_msg_log_erase_decode(&message.mavlink, &(log_erase));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_ERASE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(log_erase.target_system)
@@ -1743,7 +1735,7 @@ int mav_to_json(Message &message) {
             // msgid = 122
             mavlink_log_request_end_t log_request_end;
             mavlink_msg_log_request_end_decode(&message.mavlink, &(log_request_end));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LOG_REQUEST_END"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(log_request_end.target_system)
@@ -1757,7 +1749,7 @@ int mav_to_json(Message &message) {
             // msgid = 123
             mavlink_gps_inject_data_t gps_inject_data;
             mavlink_msg_gps_inject_data_decode(&message.mavlink, &(gps_inject_data));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS_INJECT_DATA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gps_inject_data.target_system)
@@ -1773,7 +1765,7 @@ int mav_to_json(Message &message) {
             // msgid = 124
             mavlink_gps2_raw_t gps2_raw;
             mavlink_msg_gps2_raw_decode(&message.mavlink, &(gps2_raw));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS2_RAW"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << gps2_raw.time_usec
@@ -1797,7 +1789,7 @@ int mav_to_json(Message &message) {
             // msgid = 125
             mavlink_power_status_t power_status;
             mavlink_msg_power_status_decode(&message.mavlink, &(power_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"POWER_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"Vcc\":\"" << power_status.Vcc
@@ -1812,7 +1804,7 @@ int mav_to_json(Message &message) {
             // msgid = 126
             mavlink_serial_control_t serial_control;
             mavlink_msg_serial_control_decode(&message.mavlink, &(serial_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SERIAL_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"device\":\"" << unsigned(serial_control.device)
@@ -1830,7 +1822,7 @@ int mav_to_json(Message &message) {
             // msgid = 127
             mavlink_gps_rtk_t gps_rtk;
             mavlink_msg_gps_rtk_decode(&message.mavlink, &(gps_rtk));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS_RTK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_last_baseline_ms\":\"" << gps_rtk.time_last_baseline_ms
@@ -1855,7 +1847,7 @@ int mav_to_json(Message &message) {
             // msgid = 128
             mavlink_gps2_rtk_t gps2_rtk;
             mavlink_msg_gps2_rtk_decode(&message.mavlink, &(gps2_rtk));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GPS2_RTK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_last_baseline_ms\":\"" << gps2_rtk.time_last_baseline_ms
@@ -1880,7 +1872,7 @@ int mav_to_json(Message &message) {
             // msgid = 129
             mavlink_scaled_imu3_t scaled_imu3;
             mavlink_msg_scaled_imu3_decode(&message.mavlink, &(scaled_imu3));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SCALED_IMU3"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << scaled_imu3.time_boot_ms
@@ -1902,7 +1894,7 @@ int mav_to_json(Message &message) {
             // msgid = 130
             mavlink_data_transmission_handshake_t data_transmission_handshake;
             mavlink_msg_data_transmission_handshake_decode(&message.mavlink, &(data_transmission_handshake));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA_TRANSMISSION_HANDSHAKE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(data_transmission_handshake.type)
@@ -1921,7 +1913,7 @@ int mav_to_json(Message &message) {
             // msgid = 131
             mavlink_encapsulated_data_t encapsulated_data;
             mavlink_msg_encapsulated_data_decode(&message.mavlink, &(encapsulated_data));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ENCAPSULATED_DATA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"seqnr\":\"" << encapsulated_data.seqnr
@@ -1935,7 +1927,7 @@ int mav_to_json(Message &message) {
             // msgid = 132
             mavlink_distance_sensor_t distance_sensor;
             mavlink_msg_distance_sensor_decode(&message.mavlink, &(distance_sensor));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DISTANCE_SENSOR"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << distance_sensor.time_boot_ms
@@ -1955,7 +1947,7 @@ int mav_to_json(Message &message) {
             // msgid = 133
             mavlink_terrain_request_t terrain_request;
             mavlink_msg_terrain_request_decode(&message.mavlink, &(terrain_request));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"TERRAIN_REQUEST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"lat\":\"" << terrain_request.lat
@@ -1971,7 +1963,7 @@ int mav_to_json(Message &message) {
             // msgid = 134
             mavlink_terrain_data_t terrain_data;
             mavlink_msg_terrain_data_decode(&message.mavlink, &(terrain_data));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"TERRAIN_DATA"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"lat\":\"" << terrain_data.lat
@@ -1988,7 +1980,7 @@ int mav_to_json(Message &message) {
             // msgid = 135
             mavlink_terrain_check_t terrain_check;
             mavlink_msg_terrain_check_decode(&message.mavlink, &(terrain_check));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"TERRAIN_CHECK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"lat\":\"" << terrain_check.lat
@@ -2002,7 +1994,7 @@ int mav_to_json(Message &message) {
             // msgid = 136
             mavlink_terrain_report_t terrain_report;
             mavlink_msg_terrain_report_decode(&message.mavlink, &(terrain_report));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"TERRAIN_REPORT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"lat\":\"" << terrain_report.lat
@@ -2021,7 +2013,7 @@ int mav_to_json(Message &message) {
             // msgid = 137
             mavlink_scaled_pressure2_t scaled_pressure2;
             mavlink_msg_scaled_pressure2_decode(&message.mavlink, &(scaled_pressure2));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SCALED_PRESSURE2"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << scaled_pressure2.time_boot_ms
@@ -2037,7 +2029,7 @@ int mav_to_json(Message &message) {
             // msgid = 138
             mavlink_att_pos_mocap_t att_pos_mocap;
             mavlink_msg_att_pos_mocap_decode(&message.mavlink, &(att_pos_mocap));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ATT_POS_MOCAP"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << att_pos_mocap.time_usec
@@ -2054,7 +2046,7 @@ int mav_to_json(Message &message) {
             // msgid = 139
             mavlink_set_actuator_control_target_t set_actuator_control_target;
             mavlink_msg_set_actuator_control_target_decode(&message.mavlink, &(set_actuator_control_target));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_ACTUATOR_CONTROL_TARGET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << set_actuator_control_target.time_usec
@@ -2071,7 +2063,7 @@ int mav_to_json(Message &message) {
             // msgid = 140
             mavlink_actuator_control_target_t actuator_control_target;
             mavlink_msg_actuator_control_target_decode(&message.mavlink, &(actuator_control_target));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"ACTUATOR_CONTROL_TARGET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << actuator_control_target.time_usec
@@ -2086,7 +2078,7 @@ int mav_to_json(Message &message) {
             // msgid = 147
             mavlink_battery_status_t battery_status;
             mavlink_msg_battery_status_decode(&message.mavlink, &(battery_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"BATTERY_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"id\":\"" << unsigned(battery_status.id)
@@ -2107,7 +2099,7 @@ int mav_to_json(Message &message) {
             // msgid = 148
             mavlink_autopilot_version_t autopilot_version;
             mavlink_msg_autopilot_version_decode(&message.mavlink, &(autopilot_version));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AUTOPILOT_VERSION"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"capabilities\":\"" << autopilot_version.capabilities
@@ -2130,7 +2122,7 @@ int mav_to_json(Message &message) {
             // msgid = 248
             mavlink_v2_extension_t v2_extension;
             mavlink_msg_v2_extension_decode(&message.mavlink, &(v2_extension));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"V2_EXTENSION"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_network\":\"" << unsigned(v2_extension.target_network)
@@ -2147,7 +2139,7 @@ int mav_to_json(Message &message) {
             // msgid = 249
             mavlink_memory_vect_t memory_vect;
             mavlink_msg_memory_vect_decode(&message.mavlink, &(memory_vect));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MEMORY_VECT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"address\":\"" << memory_vect.address
@@ -2163,7 +2155,7 @@ int mav_to_json(Message &message) {
             // msgid = 250
             mavlink_debug_vect_t debug_vect;
             mavlink_msg_debug_vect_decode(&message.mavlink, &(debug_vect));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DEBUG_VECT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"name\":\"" << debug_vect.name
@@ -2180,7 +2172,7 @@ int mav_to_json(Message &message) {
             // msgid = 251
             mavlink_named_value_float_t named_value_float;
             mavlink_msg_named_value_float_decode(&message.mavlink, &(named_value_float));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"NAMED_VALUE_FLOAT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << named_value_float.time_boot_ms
@@ -2195,7 +2187,7 @@ int mav_to_json(Message &message) {
             // msgid = 252
             mavlink_named_value_int_t named_value_int;
             mavlink_msg_named_value_int_decode(&message.mavlink, &(named_value_int));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"NAMED_VALUE_INT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << named_value_int.time_boot_ms
@@ -2210,7 +2202,7 @@ int mav_to_json(Message &message) {
             // msgid = 253
             mavlink_statustext_t statustext;
             mavlink_msg_statustext_decode(&message.mavlink, &(statustext));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"STATUSTEXT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"severity\":\"" << unsigned(statustext.severity)
@@ -2224,7 +2216,7 @@ int mav_to_json(Message &message) {
             // msgid = 254
             mavlink_debug_t debug;
             mavlink_msg_debug_decode(&message.mavlink, &(debug));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DEBUG"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_boot_ms\":\"" << debug.time_boot_ms
@@ -2239,7 +2231,7 @@ int mav_to_json(Message &message) {
             // msgid = 150
             mavlink_sensor_offsets_t sensor_offsets;
             mavlink_msg_sensor_offsets_decode(&message.mavlink, &(sensor_offsets));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SENSOR_OFFSETS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"mag_ofs_x\":\"" << sensor_offsets.mag_ofs_x
@@ -2263,7 +2255,7 @@ int mav_to_json(Message &message) {
             // msgid = 151
             mavlink_set_mag_offsets_t set_mag_offsets;
             mavlink_msg_set_mag_offsets_decode(&message.mavlink, &(set_mag_offsets));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SET_MAG_OFFSETS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(set_mag_offsets.target_system)
@@ -2280,7 +2272,7 @@ int mav_to_json(Message &message) {
             // msgid = 152
             mavlink_meminfo_t meminfo;
             mavlink_msg_meminfo_decode(&message.mavlink, &(meminfo));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MEMINFO"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"brkval\":\"" << meminfo.brkval
@@ -2294,7 +2286,7 @@ int mav_to_json(Message &message) {
             // msgid = 153
             mavlink_ap_adc_t ap_adc;
             mavlink_msg_ap_adc_decode(&message.mavlink, &(ap_adc));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AP_ADC"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"adc1\":\"" << ap_adc.adc1
@@ -2312,7 +2304,7 @@ int mav_to_json(Message &message) {
             // msgid = 154
             mavlink_digicam_configure_t digicam_configure;
             mavlink_msg_digicam_configure_decode(&message.mavlink, &(digicam_configure));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DIGICAM_CONFIGURE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(digicam_configure.target_system)
@@ -2335,7 +2327,7 @@ int mav_to_json(Message &message) {
             // msgid = 155
             mavlink_digicam_control_t digicam_control;
             mavlink_msg_digicam_control_decode(&message.mavlink, &(digicam_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DIGICAM_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(digicam_control.target_system)
@@ -2357,7 +2349,7 @@ int mav_to_json(Message &message) {
             // msgid = 156
             mavlink_mount_configure_t mount_configure;
             mavlink_msg_mount_configure_decode(&message.mavlink, &(mount_configure));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MOUNT_CONFIGURE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mount_configure.target_system)
@@ -2375,7 +2367,7 @@ int mav_to_json(Message &message) {
             // msgid = 157
             mavlink_mount_control_t mount_control;
             mavlink_msg_mount_control_decode(&message.mavlink, &(mount_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MOUNT_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mount_control.target_system)
@@ -2393,7 +2385,7 @@ int mav_to_json(Message &message) {
             // msgid = 158
             mavlink_mount_status_t mount_status;
             mavlink_msg_mount_status_decode(&message.mavlink, &(mount_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MOUNT_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(mount_status.target_system)
@@ -2410,7 +2402,7 @@ int mav_to_json(Message &message) {
             // msgid = 160
             mavlink_fence_point_t fence_point;
             mavlink_msg_fence_point_decode(&message.mavlink, &(fence_point));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"FENCE_POINT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(fence_point.target_system)
@@ -2428,7 +2420,7 @@ int mav_to_json(Message &message) {
             // msgid = 161
             mavlink_fence_fetch_point_t fence_fetch_point;
             mavlink_msg_fence_fetch_point_decode(&message.mavlink, &(fence_fetch_point));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"FENCE_FETCH_POINT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(fence_fetch_point.target_system)
@@ -2443,7 +2435,7 @@ int mav_to_json(Message &message) {
             // msgid = 162
             mavlink_fence_status_t fence_status;
             mavlink_msg_fence_status_decode(&message.mavlink, &(fence_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"FENCE_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"breach_status\":\"" << unsigned(fence_status.breach_status)
@@ -2459,7 +2451,7 @@ int mav_to_json(Message &message) {
             // msgid = 163
             mavlink_ahrs_t ahrs;
             mavlink_msg_ahrs_decode(&message.mavlink, &(ahrs));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AHRS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"omegaIx\":\"" << ahrs.omegaIx
@@ -2478,7 +2470,7 @@ int mav_to_json(Message &message) {
             // msgid = 164
             mavlink_simstate_t simstate;
             mavlink_msg_simstate_decode(&message.mavlink, &(simstate));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"SIMSTATE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"roll\":\"" << simstate.roll
@@ -2501,7 +2493,7 @@ int mav_to_json(Message &message) {
             // msgid = 165
             mavlink_hwstatus_t hwstatus;
             mavlink_msg_hwstatus_decode(&message.mavlink, &(hwstatus));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"HWSTATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"Vcc\":\"" << hwstatus.Vcc
@@ -2515,7 +2507,7 @@ int mav_to_json(Message &message) {
             // msgid = 166
             mavlink_radio_t radio;
             mavlink_msg_radio_decode(&message.mavlink, &(radio));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RADIO"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"rssi\":\"" << unsigned(radio.rssi)
@@ -2534,7 +2526,7 @@ int mav_to_json(Message &message) {
             // msgid = 167
             mavlink_limits_status_t limits_status;
             mavlink_msg_limits_status_decode(&message.mavlink, &(limits_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LIMITS_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"limits_state\":\"" << unsigned(limits_status.limits_state)
@@ -2555,7 +2547,7 @@ int mav_to_json(Message &message) {
             // msgid = 168
             mavlink_wind_t wind;
             mavlink_msg_wind_decode(&message.mavlink, &(wind));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"WIND"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"direction\":\"" << wind.direction
@@ -2570,7 +2562,7 @@ int mav_to_json(Message &message) {
             // msgid = 169
             mavlink_data16_t data16;
             mavlink_msg_data16_decode(&message.mavlink, &(data16));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA16"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(data16.type)
@@ -2585,7 +2577,7 @@ int mav_to_json(Message &message) {
             // msgid = 170
             mavlink_data32_t data32;
             mavlink_msg_data32_decode(&message.mavlink, &(data32));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA32"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(data32.type)
@@ -2600,7 +2592,7 @@ int mav_to_json(Message &message) {
             // msgid = 171
             mavlink_data64_t data64;
             mavlink_msg_data64_decode(&message.mavlink, &(data64));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA64"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(data64.type)
@@ -2615,7 +2607,7 @@ int mav_to_json(Message &message) {
             // msgid = 172
             mavlink_data96_t data96;
             mavlink_msg_data96_decode(&message.mavlink, &(data96));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"DATA96"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"type\":\"" << unsigned(data96.type)
@@ -2630,7 +2622,7 @@ int mav_to_json(Message &message) {
             // msgid = 173
             mavlink_rangefinder_t rangefinder;
             mavlink_msg_rangefinder_decode(&message.mavlink, &(rangefinder));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RANGEFINDER"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"distance\":\"" << rangefinder.distance
@@ -2644,7 +2636,7 @@ int mav_to_json(Message &message) {
             // msgid = 174
             mavlink_airspeed_autocal_t airspeed_autocal;
             mavlink_msg_airspeed_autocal_decode(&message.mavlink, &(airspeed_autocal));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AIRSPEED_AUTOCAL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"vx\":\"" << airspeed_autocal.vx
@@ -2668,7 +2660,7 @@ int mav_to_json(Message &message) {
             // msgid = 175
             mavlink_rally_point_t rally_point;
             mavlink_msg_rally_point_decode(&message.mavlink, &(rally_point));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RALLY_POINT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(rally_point.target_system)
@@ -2690,7 +2682,7 @@ int mav_to_json(Message &message) {
             // msgid = 176
             mavlink_rally_fetch_point_t rally_fetch_point;
             mavlink_msg_rally_fetch_point_decode(&message.mavlink, &(rally_fetch_point));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"RALLY_FETCH_POINT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(rally_fetch_point.target_system)
@@ -2705,7 +2697,7 @@ int mav_to_json(Message &message) {
             // msgid = 177
             mavlink_compassmot_status_t compassmot_status;
             mavlink_msg_compassmot_status_decode(&message.mavlink, &(compassmot_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"COMPASSMOT_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"throttle\":\"" << compassmot_status.throttle
@@ -2723,7 +2715,7 @@ int mav_to_json(Message &message) {
             // msgid = 178
             mavlink_ahrs2_t ahrs2;
             mavlink_msg_ahrs2_decode(&message.mavlink, &(ahrs2));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AHRS2"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"roll\":\"" << ahrs2.roll
@@ -2741,7 +2733,7 @@ int mav_to_json(Message &message) {
             // msgid = 179
             mavlink_camera_status_t camera_status;
             mavlink_msg_camera_status_decode(&message.mavlink, &(camera_status));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"CAMERA_STATUS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << camera_status.time_usec
@@ -2762,7 +2754,7 @@ int mav_to_json(Message &message) {
             // msgid = 180
             mavlink_camera_feedback_t camera_feedback;
             mavlink_msg_camera_feedback_decode(&message.mavlink, &(camera_feedback));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"CAMERA_FEEDBACK"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << camera_feedback.time_usec
@@ -2787,7 +2779,7 @@ int mav_to_json(Message &message) {
             // msgid = 181
             mavlink_battery2_t battery2;
             mavlink_msg_battery2_decode(&message.mavlink, &(battery2));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"BATTERY2"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"voltage\":\"" << battery2.voltage
@@ -2801,7 +2793,7 @@ int mav_to_json(Message &message) {
             // msgid = 182
             mavlink_ahrs3_t ahrs3;
             mavlink_msg_ahrs3_decode(&message.mavlink, &(ahrs3));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AHRS3"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"roll\":\"" << ahrs3.roll
@@ -2823,7 +2815,7 @@ int mav_to_json(Message &message) {
             // msgid = 183
             mavlink_autopilot_version_request_t autopilot_version_request;
             mavlink_msg_autopilot_version_request_decode(&message.mavlink, &(autopilot_version_request));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AUTOPILOT_VERSION_REQUEST"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(autopilot_version_request.target_system)
@@ -2837,7 +2829,7 @@ int mav_to_json(Message &message) {
             // msgid = 186
             mavlink_led_control_t led_control;
             mavlink_msg_led_control_decode(&message.mavlink, &(led_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"LED_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(led_control.target_system)
@@ -2855,7 +2847,7 @@ int mav_to_json(Message &message) {
             // msgid = 191
             mavlink_mag_cal_progress_t mag_cal_progress;
             mavlink_msg_mag_cal_progress_decode(&message.mavlink, &(mag_cal_progress));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MAG_CAL_PROGRESS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"compass_id\":\"" << unsigned(mag_cal_progress.compass_id)
@@ -2876,7 +2868,7 @@ int mav_to_json(Message &message) {
             // msgid = 192
             mavlink_mag_cal_report_t mag_cal_report;
             mavlink_msg_mag_cal_report_decode(&message.mavlink, &(mag_cal_report));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"MAG_CAL_REPORT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"compass_id\":\"" << unsigned(mag_cal_report.compass_id)
@@ -2902,7 +2894,7 @@ int mav_to_json(Message &message) {
             // msgid = 193
             mavlink_ekf_status_report_t ekf_status_report;
             mavlink_msg_ekf_status_report_decode(&message.mavlink, &(ekf_status_report));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"EKF_STATUS_REPORT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"flags\":\"" << ekf_status_report.flags
@@ -2920,7 +2912,7 @@ int mav_to_json(Message &message) {
             // msgid = 194
             mavlink_pid_tuning_t pid_tuning;
             mavlink_msg_pid_tuning_decode(&message.mavlink, &(pid_tuning));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"PID_TUNING"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"axis\":\"" << unsigned(pid_tuning.axis)
@@ -2939,7 +2931,7 @@ int mav_to_json(Message &message) {
             // msgid = 200
             mavlink_gimbal_report_t gimbal_report;
             mavlink_msg_gimbal_report_decode(&message.mavlink, &(gimbal_report));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_REPORT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_report.target_system)
@@ -2963,7 +2955,7 @@ int mav_to_json(Message &message) {
             // msgid = 201
             mavlink_gimbal_control_t gimbal_control;
             mavlink_msg_gimbal_control_decode(&message.mavlink, &(gimbal_control));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_CONTROL"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_control.target_system)
@@ -2980,7 +2972,7 @@ int mav_to_json(Message &message) {
             // msgid = 202
             mavlink_gimbal_reset_t gimbal_reset;
             mavlink_msg_gimbal_reset_decode(&message.mavlink, &(gimbal_reset));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_RESET"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_reset.target_system)
@@ -2994,7 +2986,7 @@ int mav_to_json(Message &message) {
             // msgid = 203
             mavlink_gimbal_axis_calibration_progress_t gimbal_axis_calibration_progress;
             mavlink_msg_gimbal_axis_calibration_progress_decode(&message.mavlink, &(gimbal_axis_calibration_progress));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_AXIS_CALIBRATION_PROGRESS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"calibration_axis\":\"" << unsigned(gimbal_axis_calibration_progress.calibration_axis)
@@ -3009,7 +3001,7 @@ int mav_to_json(Message &message) {
             // msgid = 204
             mavlink_gimbal_set_home_offsets_t gimbal_set_home_offsets;
             mavlink_msg_gimbal_set_home_offsets_decode(&message.mavlink, &(gimbal_set_home_offsets));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_SET_HOME_OFFSETS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_set_home_offsets.target_system)
@@ -3023,7 +3015,7 @@ int mav_to_json(Message &message) {
             // msgid = 205
             mavlink_gimbal_home_offset_calibration_result_t gimbal_home_offset_calibration_result;
             mavlink_msg_gimbal_home_offset_calibration_result_decode(&message.mavlink, &(gimbal_home_offset_calibration_result));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_HOME_OFFSET_CALIBRATION_RESULT"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"calibration_result\":\"" << unsigned(gimbal_home_offset_calibration_result.calibration_result)
@@ -3036,7 +3028,7 @@ int mav_to_json(Message &message) {
             // msgid = 206
             mavlink_gimbal_set_factory_parameters_t gimbal_set_factory_parameters;
             mavlink_msg_gimbal_set_factory_parameters_decode(&message.mavlink, &(gimbal_set_factory_parameters));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_SET_FACTORY_PARAMETERS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_set_factory_parameters.target_system)
@@ -3062,7 +3054,7 @@ int mav_to_json(Message &message) {
             // msgid = 207
             mavlink_gimbal_factory_parameters_loaded_t gimbal_factory_parameters_loaded;
             mavlink_msg_gimbal_factory_parameters_loaded_decode(&message.mavlink, &(gimbal_factory_parameters_loaded));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_FACTORY_PARAMETERS_LOADED"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"dummy\":\"" << unsigned(gimbal_factory_parameters_loaded.dummy)
@@ -3075,7 +3067,7 @@ int mav_to_json(Message &message) {
             // msgid = 208
             mavlink_gimbal_erase_firmware_and_config_t gimbal_erase_firmware_and_config;
             mavlink_msg_gimbal_erase_firmware_and_config_decode(&message.mavlink, &(gimbal_erase_firmware_and_config));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_ERASE_FIRMWARE_AND_CONFIG"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_erase_firmware_and_config.target_system)
@@ -3090,7 +3082,7 @@ int mav_to_json(Message &message) {
             // msgid = 209
             mavlink_gimbal_perform_factory_tests_t gimbal_perform_factory_tests;
             mavlink_msg_gimbal_perform_factory_tests_decode(&message.mavlink, &(gimbal_perform_factory_tests));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_PERFORM_FACTORY_TESTS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gimbal_perform_factory_tests.target_system)
@@ -3104,7 +3096,7 @@ int mav_to_json(Message &message) {
             // msgid = 210
             mavlink_gimbal_report_factory_tests_progress_t gimbal_report_factory_tests_progress;
             mavlink_msg_gimbal_report_factory_tests_progress_decode(&message.mavlink, &(gimbal_report_factory_tests_progress));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GIMBAL_REPORT_FACTORY_TESTS_PROGRESS"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"test\":\"" << unsigned(gimbal_report_factory_tests_progress.test)
@@ -3120,7 +3112,7 @@ int mav_to_json(Message &message) {
             // msgid = 215
             mavlink_gopro_power_on_t gopro_power_on;
             mavlink_msg_gopro_power_on_decode(&message.mavlink, &(gopro_power_on));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GOPRO_POWER_ON"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gopro_power_on.target_system)
@@ -3134,7 +3126,7 @@ int mav_to_json(Message &message) {
             // msgid = 216
             mavlink_gopro_power_off_t gopro_power_off;
             mavlink_msg_gopro_power_off_decode(&message.mavlink, &(gopro_power_off));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GOPRO_POWER_OFF"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gopro_power_off.target_system)
@@ -3148,7 +3140,7 @@ int mav_to_json(Message &message) {
             // msgid = 217
             mavlink_gopro_command_t gopro_command;
             mavlink_msg_gopro_command_decode(&message.mavlink, &(gopro_command));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GOPRO_COMMAND"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"target_system\":\"" << unsigned(gopro_command.target_system)
@@ -3165,7 +3157,7 @@ int mav_to_json(Message &message) {
             // msgid = 218
             mavlink_gopro_response_t gopro_response;
             mavlink_msg_gopro_response_decode(&message.mavlink, &(gopro_response));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"GOPRO_RESPONSE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"gp_cmd_name_1\":\"" << unsigned(gopro_response.gp_cmd_name_1)
@@ -3182,7 +3174,7 @@ int mav_to_json(Message &message) {
             // msgid = 240
             mavlink_ncar_pth_t ncar_pth;
             mavlink_msg_ncar_pth_decode(&message.mavlink, &(ncar_pth));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"NCAR_PTH"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << ncar_pth.time_usec
@@ -3201,7 +3193,7 @@ int mav_to_json(Message &message) {
             // msgid = 241
             mavlink_vector_nav_t vector_nav;
             mavlink_msg_vector_nav_decode(&message.mavlink, &(vector_nav));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"VECTOR_NAV"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << vector_nav.time_usec
@@ -3227,12 +3219,6 @@ int mav_to_json(Message &message) {
                 << "\",\"accel_0\":\"" << vector_nav.accel_0
                 << "\",\"accel_1\":\"" << vector_nav.accel_1
                 << "\",\"accel_2\":\"" << vector_nav.accel_2
-                << "\",\"imu_0\":\"" << vector_nav.imu_0
-                << "\",\"imu_1\":\"" << vector_nav.imu_1
-                << "\",\"imu_2\":\"" << vector_nav.imu_2
-                << "\",\"imu_3\":\"" << vector_nav.imu_3
-                << "\",\"imu_4\":\"" << vector_nav.imu_4
-                << "\",\"imu_5\":\"" << vector_nav.imu_5
                 << "\",\"mag_pres_0\":\"" << vector_nav.mag_pres_0
                 << "\",\"mag_pres_1\":\"" << vector_nav.mag_pres_1
                 << "\",\"mag_pres_2\":\"" << vector_nav.mag_pres_2
@@ -3248,6 +3234,13 @@ int mav_to_json(Message &message) {
                 << "\",\"ins_status\":\"" << vector_nav.ins_status
                 << "\",\"syncln_cnt\":\"" << vector_nav.syncln_cnt
                 << "\",\"gps_pps\":\"" << vector_nav.gps_pps
+                << "\",\"utc_year\":\"" << static_cast<int16_t>(vector_nav.utc_year)
+                << "\",\"utc_month\":\"" << unsigned(vector_nav.utc_month)
+                << "\",\"utc_day\":\"" << unsigned(vector_nav.utc_day)
+                << "\",\"utc_hour\":\"" << unsigned(vector_nav.utc_hour)
+                << "\",\"utc_min\":\"" << unsigned(vector_nav.utc_min)
+                << "\",\"utc_sec\":\"" << unsigned(vector_nav.utc_sec)
+                << "\",\"utc_ms\":\"" << vector_nav.utc_ms
                 << "\"}";
 
             message.json = stream.str();
@@ -3257,7 +3250,7 @@ int mav_to_json(Message &message) {
             // msgid = 242
             mavlink_aeroprobe_t aeroprobe;
             mavlink_msg_aeroprobe_decode(&message.mavlink, &(aeroprobe));
-            stream << "{\"airserver_time\":" << message.timestamp
+            stream << "{\"airserver_time_micros\":" << message.timestamp
                 << "\",\"type\":\"AEROPROBE"
                 << "\",\"system_id\":\"" << sysid
                 << "\",\"time_usec\":\"" << aeroprobe.time_usec
@@ -3270,6 +3263,96 @@ int mav_to_json(Message &message) {
                 << "\",\"ps\":\"" << aeroprobe.ps
                 << "\",\"pt\":\"" << aeroprobe.pt
                 << "\",\"tc\":\"" << aeroprobe.tc
+                << "\"}";
+
+            message.json = stream.str();
+            return 0;
+
+        case MAVLINK_MSG_ID_TEENSY_TEMPERATURE: 
+            // msgid = 243
+            mavlink_teensy_temperature_t teensy_temperature;
+            mavlink_msg_teensy_temperature_decode(&message.mavlink, &(teensy_temperature));
+            stream << "{\"airserver_time_micros\":" << message.timestamp
+                << "\",\"type\":\"TEENSY_TEMPERATURE"
+                << "\",\"system_id\":\"" << sysid
+                << "\",\"time_usec\":\"" << teensy_temperature.time_usec
+                << "\",\"time_device\":\"" << teensy_temperature.time_device
+                << "\",\"temp_1\":\"" << teensy_temperature.temp_1
+                << "\",\"temp_2\":\"" << teensy_temperature.temp_2
+                << "\",\"temp_3\":\"" << teensy_temperature.temp_3
+                << "\",\"temp_4\":\"" << teensy_temperature.temp_4
+                << "\",\"temp_5\":\"" << teensy_temperature.temp_5
+                << "\",\"temp_6\":\"" << teensy_temperature.temp_6
+                << "\",\"temp_7\":\"" << teensy_temperature.temp_7
+                << "\",\"temp_8\":\"" << teensy_temperature.temp_8
+                << "\",\"temp_9\":\"" << teensy_temperature.temp_9
+                << "\",\"temp_10\":\"" << teensy_temperature.temp_10
+                << "\",\"temp_11\":\"" << teensy_temperature.temp_11
+                << "\",\"temp_12\":\"" << teensy_temperature.temp_12
+                << "\",\"temp_13\":\"" << teensy_temperature.temp_13
+                << "\",\"temp_14\":\"" << teensy_temperature.temp_14
+                << "\",\"temp_15\":\"" << teensy_temperature.temp_15
+                << "\",\"temp_16\":\"" << teensy_temperature.temp_16
+                << "\"}";
+
+            message.json = stream.str();
+            return 0;
+
+        case MAVLINK_MSG_ID_TEENSY_PRESSURE: 
+            // msgid = 244
+            mavlink_teensy_pressure_t teensy_pressure;
+            mavlink_msg_teensy_pressure_decode(&message.mavlink, &(teensy_pressure));
+            stream << "{\"airserver_time_micros\":" << message.timestamp
+                << "\",\"type\":\"TEENSY_PRESSURE"
+                << "\",\"system_id\":\"" << sysid
+                << "\",\"time_usec\":\"" << teensy_pressure.time_usec
+                << "\",\"time_device\":\"" << teensy_pressure.time_device
+                << "\",\"press_1\":\"" << teensy_pressure.press_1
+                << "\",\"press_2\":\"" << teensy_pressure.press_2
+                << "\",\"press_3\":\"" << teensy_pressure.press_3
+                << "\",\"press_4\":\"" << teensy_pressure.press_4
+                << "\",\"press_5\":\"" << teensy_pressure.press_5
+                << "\",\"press_6\":\"" << teensy_pressure.press_6
+                << "\",\"press_7\":\"" << teensy_pressure.press_7
+                << "\",\"press_8\":\"" << teensy_pressure.press_8
+                << "\",\"press_9\":\"" << teensy_pressure.press_9
+                << "\",\"press_10\":\"" << teensy_pressure.press_10
+                << "\",\"press_11\":\"" << teensy_pressure.press_11
+                << "\",\"press_12\":\"" << teensy_pressure.press_12
+                << "\",\"press_13\":\"" << teensy_pressure.press_13
+                << "\",\"press_14\":\"" << teensy_pressure.press_14
+                << "\",\"press_15\":\"" << teensy_pressure.press_15
+                << "\",\"press_16\":\"" << teensy_pressure.press_16
+                << "\"}";
+
+            message.json = stream.str();
+            return 0;
+
+        case MAVLINK_MSG_ID_TEENSY_HUMIDITY: 
+            // msgid = 245
+            mavlink_teensy_humidity_t teensy_humidity;
+            mavlink_msg_teensy_humidity_decode(&message.mavlink, &(teensy_humidity));
+            stream << "{\"airserver_time_micros\":" << message.timestamp
+                << "\",\"type\":\"TEENSY_HUMIDITY"
+                << "\",\"system_id\":\"" << sysid
+                << "\",\"time_usec\":\"" << teensy_humidity.time_usec
+                << "\",\"time_device\":\"" << teensy_humidity.time_device
+                << "\",\"humid_1\":\"" << teensy_humidity.humid_1
+                << "\",\"humid_2\":\"" << teensy_humidity.humid_2
+                << "\",\"humid_3\":\"" << teensy_humidity.humid_3
+                << "\",\"humid_4\":\"" << teensy_humidity.humid_4
+                << "\",\"humid_5\":\"" << teensy_humidity.humid_5
+                << "\",\"humid_6\":\"" << teensy_humidity.humid_6
+                << "\",\"humid_7\":\"" << teensy_humidity.humid_7
+                << "\",\"humid_8\":\"" << teensy_humidity.humid_8
+                << "\",\"humid_9\":\"" << teensy_humidity.humid_9
+                << "\",\"humid_10\":\"" << teensy_humidity.humid_10
+                << "\",\"humid_11\":\"" << teensy_humidity.humid_11
+                << "\",\"humid_12\":\"" << teensy_humidity.humid_12
+                << "\",\"humid_13\":\"" << teensy_humidity.humid_13
+                << "\",\"humid_14\":\"" << teensy_humidity.humid_14
+                << "\",\"humid_15\":\"" << teensy_humidity.humid_15
+                << "\",\"humid_16\":\"" << teensy_humidity.humid_16
                 << "\"}";
 
             message.json = stream.str();
@@ -3306,8 +3389,9 @@ int json_to_mav(Message &message) {
         return 1;
     }
 
-    if(jsoneq(message.json.c_str(), &t[0], "type")) i = 0;
-    if(jsoneq(message.json.c_str(), &t[0], "type")) i = 1;
-    else return -1;
+    //if(jsoneq(message.json.c_str(), &t[0], "type")) i = 0;
+    //if(jsoneq(message.json.c_str(), &t[0], "type")) i = 1;
+    //else return -1;
+    //for
     return -1;
 }

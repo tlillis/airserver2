@@ -8,17 +8,17 @@
 #   restriction of the mavlink
 #   protocol.
 
-type        SERIAL
+type        UDP
 format      MAVLINK
 direction   IN
-interface   /tmp/ttyV0
+interface   0.0.0.0
 filter      0
 debug       0
 port        0
 port_send   0
-port_bind   0
+port_bind   14550
 broadcast   0
-baud        115200
+baud        0
 use         1
 
 type        LOGGING
@@ -34,15 +34,3 @@ broadcast   0
 baud        0
 use         1
 
-type        UDP
-format      JSON
-direction   OUT
-interface   0.0.0.0
-filter      0
-debug       0
-port        14555
-port_send   0
-port_bind   0
-broadcast   0
-baud        0
-use         1

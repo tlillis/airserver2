@@ -82,7 +82,7 @@ static void mavlink_test_vector_nav(uint8_t system_id, uint8_t component_id, mav
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_vector_nav_t packet_in = {
-		93372036854775807ULL,93372036854776311ULL,93372036854776815ULL,93372036854777319ULL,347.0,403.0,459.0,93372036854779335ULL,465.0,493.0,521.0,549.0,577.0,605.0,633.0,661.0,689.0,717.0,745.0,773.0,801.0,829.0,857.0,885.0,913.0,941.0,969.0,997.0,1025.0,1053.0,1081.0,1109.0,1137.0,1165.0,1193.0,1221.0,1249.0,1277.0,1305.0,1333.0,1361.0,1389.0,963507864,27843
+		93372036854775807ULL,93372036854776311ULL,93372036854776815ULL,93372036854777319ULL,347.0,403.0,459.0,93372036854779335ULL,465.0,493.0,521.0,549.0,577.0,605.0,633.0,661.0,689.0,717.0,745.0,773.0,801.0,829.0,857.0,885.0,913.0,941.0,969.0,997.0,1025.0,1053.0,1081.0,1109.0,1137.0,1165.0,1193.0,1221.0,963506616,26595,26699,45,112,179,246,57,124
     };
 	mavlink_vector_nav_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -110,12 +110,6 @@ static void mavlink_test_vector_nav(uint8_t system_id, uint8_t component_id, mav
         	packet1.accel_0 = packet_in.accel_0;
         	packet1.accel_1 = packet_in.accel_1;
         	packet1.accel_2 = packet_in.accel_2;
-        	packet1.imu_0 = packet_in.imu_0;
-        	packet1.imu_1 = packet_in.imu_1;
-        	packet1.imu_2 = packet_in.imu_2;
-        	packet1.imu_3 = packet_in.imu_3;
-        	packet1.imu_4 = packet_in.imu_4;
-        	packet1.imu_5 = packet_in.imu_5;
         	packet1.mag_pres_0 = packet_in.mag_pres_0;
         	packet1.mag_pres_1 = packet_in.mag_pres_1;
         	packet1.mag_pres_2 = packet_in.mag_pres_2;
@@ -130,6 +124,13 @@ static void mavlink_test_vector_nav(uint8_t system_id, uint8_t component_id, mav
         	packet1.delta_theta_6 = packet_in.delta_theta_6;
         	packet1.syncln_cnt = packet_in.syncln_cnt;
         	packet1.ins_status = packet_in.ins_status;
+        	packet1.utc_ms = packet_in.utc_ms;
+        	packet1.utc_year = packet_in.utc_year;
+        	packet1.utc_month = packet_in.utc_month;
+        	packet1.utc_day = packet_in.utc_day;
+        	packet1.utc_hour = packet_in.utc_hour;
+        	packet1.utc_min = packet_in.utc_min;
+        	packet1.utc_sec = packet_in.utc_sec;
         
         
 
@@ -139,12 +140,12 @@ static void mavlink_test_vector_nav(uint8_t system_id, uint8_t component_id, mav
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_vector_nav_pack(system_id, component_id, &msg , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.imu_0 , packet1.imu_1 , packet1.imu_2 , packet1.imu_3 , packet1.imu_4 , packet1.imu_5 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps );
+	mavlink_msg_vector_nav_pack(system_id, component_id, &msg , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps , packet1.utc_year , packet1.utc_month , packet1.utc_day , packet1.utc_hour , packet1.utc_min , packet1.utc_sec , packet1.utc_ms );
 	mavlink_msg_vector_nav_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_vector_nav_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.imu_0 , packet1.imu_1 , packet1.imu_2 , packet1.imu_3 , packet1.imu_4 , packet1.imu_5 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps );
+	mavlink_msg_vector_nav_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps , packet1.utc_year , packet1.utc_month , packet1.utc_day , packet1.utc_hour , packet1.utc_min , packet1.utc_sec , packet1.utc_ms );
 	mavlink_msg_vector_nav_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -157,7 +158,7 @@ static void mavlink_test_vector_nav(uint8_t system_id, uint8_t component_id, mav
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_vector_nav_send(MAVLINK_COMM_1 , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.imu_0 , packet1.imu_1 , packet1.imu_2 , packet1.imu_3 , packet1.imu_4 , packet1.imu_5 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps );
+	mavlink_msg_vector_nav_send(MAVLINK_COMM_1 , packet1.time_usec , packet1.time_startup , packet1.time_gps , packet1.time_syncln , packet1.yaw , packet1.pitch , packet1.roll , packet1.qtn_0 , packet1.qtn_1 , packet1.qtn_2 , packet1.qtn_3 , packet1.rate_0 , packet1.rate_1 , packet1.rate_2 , packet1.lat , packet1.lon , packet1.alt , packet1.vel_0 , packet1.vel_1 , packet1.vel_2 , packet1.accel_0 , packet1.accel_1 , packet1.accel_2 , packet1.mag_pres_0 , packet1.mag_pres_1 , packet1.mag_pres_2 , packet1.mag_pres_3 , packet1.mag_pres_4 , packet1.delta_theta_0 , packet1.delta_theta_1 , packet1.delta_theta_2 , packet1.delta_theta_3 , packet1.delta_theta_4 , packet1.delta_theta_5 , packet1.delta_theta_6 , packet1.ins_status , packet1.syncln_cnt , packet1.gps_pps , packet1.utc_year , packet1.utc_month , packet1.utc_day , packet1.utc_hour , packet1.utc_min , packet1.utc_sec , packet1.utc_ms );
 	mavlink_msg_vector_nav_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -214,11 +215,194 @@ static void mavlink_test_aeroprobe(uint8_t system_id, uint8_t component_id, mavl
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
+static void mavlink_test_teensy_temperature(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_teensy_temperature_t packet_in = {
+		93372036854775807ULL,963497880,17859,17963,18067,18171,18275,18379,18483,18587,18691,18795,18899,19003,19107,19211,19315,19419
+    };
+	mavlink_teensy_temperature_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        	packet1.time_usec = packet_in.time_usec;
+        	packet1.time_device = packet_in.time_device;
+        	packet1.temp_1 = packet_in.temp_1;
+        	packet1.temp_2 = packet_in.temp_2;
+        	packet1.temp_3 = packet_in.temp_3;
+        	packet1.temp_4 = packet_in.temp_4;
+        	packet1.temp_5 = packet_in.temp_5;
+        	packet1.temp_6 = packet_in.temp_6;
+        	packet1.temp_7 = packet_in.temp_7;
+        	packet1.temp_8 = packet_in.temp_8;
+        	packet1.temp_9 = packet_in.temp_9;
+        	packet1.temp_10 = packet_in.temp_10;
+        	packet1.temp_11 = packet_in.temp_11;
+        	packet1.temp_12 = packet_in.temp_12;
+        	packet1.temp_13 = packet_in.temp_13;
+        	packet1.temp_14 = packet_in.temp_14;
+        	packet1.temp_15 = packet_in.temp_15;
+        	packet1.temp_16 = packet_in.temp_16;
+        
+        
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_temperature_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_teensy_temperature_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_temperature_pack(system_id, component_id, &msg , packet1.time_usec , packet1.time_device , packet1.temp_1 , packet1.temp_2 , packet1.temp_3 , packet1.temp_4 , packet1.temp_5 , packet1.temp_6 , packet1.temp_7 , packet1.temp_8 , packet1.temp_9 , packet1.temp_10 , packet1.temp_11 , packet1.temp_12 , packet1.temp_13 , packet1.temp_14 , packet1.temp_15 , packet1.temp_16 );
+	mavlink_msg_teensy_temperature_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_temperature_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_usec , packet1.time_device , packet1.temp_1 , packet1.temp_2 , packet1.temp_3 , packet1.temp_4 , packet1.temp_5 , packet1.temp_6 , packet1.temp_7 , packet1.temp_8 , packet1.temp_9 , packet1.temp_10 , packet1.temp_11 , packet1.temp_12 , packet1.temp_13 , packet1.temp_14 , packet1.temp_15 , packet1.temp_16 );
+	mavlink_msg_teensy_temperature_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_teensy_temperature_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_temperature_send(MAVLINK_COMM_1 , packet1.time_usec , packet1.time_device , packet1.temp_1 , packet1.temp_2 , packet1.temp_3 , packet1.temp_4 , packet1.temp_5 , packet1.temp_6 , packet1.temp_7 , packet1.temp_8 , packet1.temp_9 , packet1.temp_10 , packet1.temp_11 , packet1.temp_12 , packet1.temp_13 , packet1.temp_14 , packet1.temp_15 , packet1.temp_16 );
+	mavlink_msg_teensy_temperature_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+}
+
+static void mavlink_test_teensy_pressure(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_teensy_pressure_t packet_in = {
+		93372036854775807ULL,963497880,17859,17963,18067,18171,18275,18379,18483,18587,18691,18795,18899,19003,19107,19211,19315,19419
+    };
+	mavlink_teensy_pressure_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        	packet1.time_usec = packet_in.time_usec;
+        	packet1.time_device = packet_in.time_device;
+        	packet1.press_1 = packet_in.press_1;
+        	packet1.press_2 = packet_in.press_2;
+        	packet1.press_3 = packet_in.press_3;
+        	packet1.press_4 = packet_in.press_4;
+        	packet1.press_5 = packet_in.press_5;
+        	packet1.press_6 = packet_in.press_6;
+        	packet1.press_7 = packet_in.press_7;
+        	packet1.press_8 = packet_in.press_8;
+        	packet1.press_9 = packet_in.press_9;
+        	packet1.press_10 = packet_in.press_10;
+        	packet1.press_11 = packet_in.press_11;
+        	packet1.press_12 = packet_in.press_12;
+        	packet1.press_13 = packet_in.press_13;
+        	packet1.press_14 = packet_in.press_14;
+        	packet1.press_15 = packet_in.press_15;
+        	packet1.press_16 = packet_in.press_16;
+        
+        
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_pressure_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_teensy_pressure_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_pressure_pack(system_id, component_id, &msg , packet1.time_usec , packet1.time_device , packet1.press_1 , packet1.press_2 , packet1.press_3 , packet1.press_4 , packet1.press_5 , packet1.press_6 , packet1.press_7 , packet1.press_8 , packet1.press_9 , packet1.press_10 , packet1.press_11 , packet1.press_12 , packet1.press_13 , packet1.press_14 , packet1.press_15 , packet1.press_16 );
+	mavlink_msg_teensy_pressure_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_pressure_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_usec , packet1.time_device , packet1.press_1 , packet1.press_2 , packet1.press_3 , packet1.press_4 , packet1.press_5 , packet1.press_6 , packet1.press_7 , packet1.press_8 , packet1.press_9 , packet1.press_10 , packet1.press_11 , packet1.press_12 , packet1.press_13 , packet1.press_14 , packet1.press_15 , packet1.press_16 );
+	mavlink_msg_teensy_pressure_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_teensy_pressure_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_pressure_send(MAVLINK_COMM_1 , packet1.time_usec , packet1.time_device , packet1.press_1 , packet1.press_2 , packet1.press_3 , packet1.press_4 , packet1.press_5 , packet1.press_6 , packet1.press_7 , packet1.press_8 , packet1.press_9 , packet1.press_10 , packet1.press_11 , packet1.press_12 , packet1.press_13 , packet1.press_14 , packet1.press_15 , packet1.press_16 );
+	mavlink_msg_teensy_pressure_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+}
+
+static void mavlink_test_teensy_humidity(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_teensy_humidity_t packet_in = {
+		93372036854775807ULL,963497880,17859,17963,18067,18171,18275,18379,18483,18587,18691,18795,18899,19003,19107,19211,19315,19419
+    };
+	mavlink_teensy_humidity_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        	packet1.time_usec = packet_in.time_usec;
+        	packet1.time_device = packet_in.time_device;
+        	packet1.humid_1 = packet_in.humid_1;
+        	packet1.humid_2 = packet_in.humid_2;
+        	packet1.humid_3 = packet_in.humid_3;
+        	packet1.humid_4 = packet_in.humid_4;
+        	packet1.humid_5 = packet_in.humid_5;
+        	packet1.humid_6 = packet_in.humid_6;
+        	packet1.humid_7 = packet_in.humid_7;
+        	packet1.humid_8 = packet_in.humid_8;
+        	packet1.humid_9 = packet_in.humid_9;
+        	packet1.humid_10 = packet_in.humid_10;
+        	packet1.humid_11 = packet_in.humid_11;
+        	packet1.humid_12 = packet_in.humid_12;
+        	packet1.humid_13 = packet_in.humid_13;
+        	packet1.humid_14 = packet_in.humid_14;
+        	packet1.humid_15 = packet_in.humid_15;
+        	packet1.humid_16 = packet_in.humid_16;
+        
+        
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_humidity_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_teensy_humidity_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_humidity_pack(system_id, component_id, &msg , packet1.time_usec , packet1.time_device , packet1.humid_1 , packet1.humid_2 , packet1.humid_3 , packet1.humid_4 , packet1.humid_5 , packet1.humid_6 , packet1.humid_7 , packet1.humid_8 , packet1.humid_9 , packet1.humid_10 , packet1.humid_11 , packet1.humid_12 , packet1.humid_13 , packet1.humid_14 , packet1.humid_15 , packet1.humid_16 );
+	mavlink_msg_teensy_humidity_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_humidity_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time_usec , packet1.time_device , packet1.humid_1 , packet1.humid_2 , packet1.humid_3 , packet1.humid_4 , packet1.humid_5 , packet1.humid_6 , packet1.humid_7 , packet1.humid_8 , packet1.humid_9 , packet1.humid_10 , packet1.humid_11 , packet1.humid_12 , packet1.humid_13 , packet1.humid_14 , packet1.humid_15 , packet1.humid_16 );
+	mavlink_msg_teensy_humidity_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_teensy_humidity_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_teensy_humidity_send(MAVLINK_COMM_1 , packet1.time_usec , packet1.time_device , packet1.humid_1 , packet1.humid_2 , packet1.humid_3 , packet1.humid_4 , packet1.humid_5 , packet1.humid_6 , packet1.humid_7 , packet1.humid_8 , packet1.humid_9 , packet1.humid_10 , packet1.humid_11 , packet1.humid_12 , packet1.humid_13 , packet1.humid_14 , packet1.humid_15 , packet1.humid_16 );
+	mavlink_msg_teensy_humidity_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+}
+
 static void mavlink_test_airserver(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_test_ncar_pth(system_id, component_id, last_msg);
 	mavlink_test_vector_nav(system_id, component_id, last_msg);
 	mavlink_test_aeroprobe(system_id, component_id, last_msg);
+	mavlink_test_teensy_temperature(system_id, component_id, last_msg);
+	mavlink_test_teensy_pressure(system_id, component_id, last_msg);
+	mavlink_test_teensy_humidity(system_id, component_id, last_msg);
 }
 
 #ifdef __cplusplus
